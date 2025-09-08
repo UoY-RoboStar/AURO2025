@@ -1,4 +1,0 @@
-#!/bin/bash
-# Nothing to do on the mac/linux.
-
-export DOCKER_DEFAULT_PLATFORM=linux/amd64
