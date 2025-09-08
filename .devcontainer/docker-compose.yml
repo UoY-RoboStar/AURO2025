@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  app:
+    image: ghcr.io/pefribeiro/ros2-tb3:main
+    platform: linux/amd64
+    command: ["tail", "-f", "/dev/null"]
+    volumes:
+    - type: bind
+      source: ${HOME}${USERPROFILE}/.bash_history
+      target: /home/vscode/.bash_history
