@@ -1,0 +1,15 @@
+// This is the devcontainer configuration file for the "other" configuration,
+// which could be used to build a container directly from the Dockerfile without VNC.
+//
+// It would be suitable, for example, for passthrough of X if running Docker on Linux.
+{
+  "name": "auro-other",
+  "build": { "dockerfile":"Dockerfile" },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.bash_history,target=/home/vscode/.bash_history,type=bind"
+  ],
+  "remoteUser": "ubuntu",
+  "postStartCommand": "touch /workspaces/.bash_history && ln -s /workspaces/.bash_history /home/ubuntu/.bash_history",
+}

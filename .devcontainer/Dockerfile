@@ -1,1 +1,1 @@
-FROM ghcr.io/pefribeiro/ros2-tb3:main
+FROM ghcr.io/UoY-RoboStar/ros2-tb3:main
