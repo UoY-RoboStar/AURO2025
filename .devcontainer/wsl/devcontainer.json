@@ -7,8 +7,7 @@
   "image": "ghcr.io/uoy-robostar/ros2-tb3/auro-dev:latest",
   // These seem necessary to be able to see the GPU within WSL container.
   "runArgs": [
-    "--device=/dev/dxg",
-    "--device=/dev/dri"
+    "--device=/dev/dxg"
   ],
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
