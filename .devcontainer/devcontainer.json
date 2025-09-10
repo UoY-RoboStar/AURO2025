@@ -4,7 +4,7 @@
 // so does not require a Dockerfile.
 {
   "name": "auro-vnc",
-  "image": "ghcr.io/UoY-RoboStar/ros2-tb3/auro-dev:latest",
+  "image": "ghcr.io/uoy-robostar/ros2-tb3/auro-dev:latest",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "mounts": [
