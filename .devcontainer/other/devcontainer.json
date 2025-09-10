@@ -11,5 +11,5 @@
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.bash_history,target=/home/vscode/.bash_history,type=bind"
   ],
   "remoteUser": "ubuntu",
-  "postStartCommand": "touch /workspaces/.bash_history && ln -s /workspaces/.bash_history /home/ubuntu/.bash_history",
+  "postStartCommand": "touch /workspaces/.bash_history && ln -sf /workspaces/.bash_history /home/ubuntu/.bash_history",
 }
