@@ -1,4 +1,5 @@
-# Ignore ROS2 build folders
+# Ignore ROS2 build folders and Python cache files
 build/
 install/
 log/
+*.pyc
