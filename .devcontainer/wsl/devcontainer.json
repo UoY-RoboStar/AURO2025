@@ -24,7 +24,6 @@
   "containerEnv": {
     "LD_LIBRARY_PATH": "/usr/lib/wsl/lib",
     "WAYLAND_DISPLAY": "wayland-0",
-    "XDG_RUNTIME_DIR": "/mnt/wslg/runtime-dir",
     "DISPLAY": ":0",
     "PULSE_SERVER": "/mnt/wslg/PulseServer"
   }
