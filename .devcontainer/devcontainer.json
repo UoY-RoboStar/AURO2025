@@ -16,5 +16,9 @@
           "label": "Desktop"
       }
   },
-  "postStartCommand": "touch /workspaces/.bash_history && ln -sf /workspaces/.bash_history /home/ubuntu/.bash_history ; /workspaces/${localWorkspaceFolderBasename}/.devcontainer/gitconfig.sh"
+  "postStartCommand": "touch /workspaces/.bash_history && ln -sf /workspaces/.bash_history /home/ubuntu/.bash_history ; /workspaces/${localWorkspaceFolderBasename}/.devcontainer/gitconfig.sh",
+  "remoteEnv": {
+    "USERNAME": "${localEnv:USERNAME}",
+    "USERDNSDOMAIN": "${localEnv:USERDNSDOMAIN}"
+  }
 }
