@@ -2,7 +2,7 @@
 # Bash script to configure git user name/email within the Dev Container based
 # on either environment variables passed or .gitconfig under ~/homedir/AppData/Roaming/.gitconfig.
 
-if [ -z "$(git config user.name)"]; then
+if [ -z "$(git config user.name)" ]; then
     if [ -f ~/homedir/AppData/Roaming/.gitconfig ]; then
         echo "[INFO]: Configuring git user within container based on that in '~/homedir/AppData/Roaming/.gitconfig'"
         git config --global user.name "$(git config -f ~/homedir/AppData/Roaming/.gitconfig --get user.name)"
@@ -16,7 +16,7 @@ if [ -z "$(git config user.name)"]; then
     fi
 fi
 
-if [ -z "$(git config user.email)"]; then
+if [ -z "$(git config user.email)" ]; then
     if [ -f ~/homedir/AppData/Roaming/.gitconfig ]; then
         echo "[INFO]: Configuring git user within container based on that in '~/homedir/AppData/Roaming/.gitconfig'"
         git config --global user.email "$(git config -f ~/homedir/AppData/Roaming/.gitconfig --get user.email)"
