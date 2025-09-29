@@ -1,0 +1,1 @@
+This folder contains supporting ROS2 nodes, and sample solutions, for the tasks in Week 1, Practical 2.
