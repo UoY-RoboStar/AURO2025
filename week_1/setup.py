@@ -27,7 +27,8 @@ setup(
             'turtlebot3_drive_python = week_1.turtlebot3_drive_python:main',
             'task5_publisher = week_1.task5_publisher:main',
             'task5_graceful_termination = week_1.task5_graceful_termination:main',
-            'task9_subscriber = week_1.task9_subscriber:main'
+            'task9_subscriber = week_1.task9_subscriber:main',
+            'task14 = week_1.task14:main'
         ],
     },
 )
