@@ -154,7 +154,7 @@ def rotate_vector_2d(x, y, theta):
 def angle_diff(theta1: float, theta2: float) -> float:
     """Return smallest absolute angle difference in radians."""
     diff = (theta1 - theta2 + math.pi) % (2 * math.pi) - math.pi
-    return abs(diff)
+    return diff
 
 def main(args=None):
     rclpy.init(args=args)
