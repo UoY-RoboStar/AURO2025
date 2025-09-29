@@ -15,7 +15,7 @@ setup(
     zip_safe=True,
     maintainer='ubuntu',
     maintainer_email='pedro.ribeiro@york.ac.uk',
-    description='TODO: Package description',
+    description='AURO: Week 1, Practical 2, ROS2 sample nodes',
     license='Apache-2.0',
     extras_require={
         'test': [
@@ -24,7 +24,10 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'turtlebot3_drive_python = week_1.turtlebot3_drive_python:main'
+            'turtlebot3_drive_python = week_1.turtlebot3_drive_python:main',
+            'task5_publisher = week_1.task5_publisher:main',
+            'task5_graceful_termination = week_1.task5_graceful_termination:main',
+            'task9_subscriber = week_1.task9_subscriber:main'
         ],
     },
 )

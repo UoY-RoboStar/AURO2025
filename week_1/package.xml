@@ -3,7 +3,7 @@
 <package format="3">
   <name>week_1</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>AURO: Week 1, Practical 2, ROS2 sample nodes</description>
   <maintainer email="pedro.ribeiro@york.ac.uk">ubuntu</maintainer>
   <license>Apache-2.0</license>
 
