@@ -28,7 +28,8 @@ setup(
             'task5_publisher = week_1.task5_publisher:main',
             'task5_graceful_termination = week_1.task5_graceful_termination:main',
             'task9_subscriber = week_1.task9_subscriber:main',
-            'task14 = week_1.task14:main'
+            'task14 = week_1.task14:main',
+            'task16 = week_1.task16:main'
         ],
     },
 )
