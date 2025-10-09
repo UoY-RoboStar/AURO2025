@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="simple_box">
+    <pose>0 0 0.5 0 0 0</pose>
+    <link name="body">
+      <inertial>
+        <mass>2.0</mass>
+        <inertia>
+          <ixx>0.02</ixx><iyy>0.02</iyy><izz>0.02</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry><box><size>0.5 0.5 0.5</size></box></geometry>
+      </collision>
+      <visual name="visual">
+        <geometry><box><size>0.5 0.5 0.5</size></box></geometry>
+        <material><ambient>0.2 0.5 0.6 1</ambient></material>
+      </visual>
+    </link>
+    <static>false</static>
+  </model>
+</sdf>
+
