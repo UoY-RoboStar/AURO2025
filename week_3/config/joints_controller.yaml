@@ -1,0 +1,12 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz
+
+    position_controller:
+      type: position_controllers/JointGroupPositionController
+
+position_controller:
+  ros__parameters:
+    joints:
+      - joint1
+      - joint2
