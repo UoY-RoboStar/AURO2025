@@ -50,7 +50,8 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'moveit_py = week_3.moveit_py:main'
+            'moveit_py = week_3.moveit_py:main',
+            'planar_fk_euler = week_3.planar_fk_euler:main'
         ],
     },
 )
