@@ -1,0 +1,23 @@
+import sequence_toolkit::* 
+import set_toolkit::* 
+import relation_toolkit::*
+
+ controller ObstacleDetector {
+	uses IEvents uses IObstacle stm DetectorFSM {
+		uses IEvents uses IObstacle 
+		
+		
+		initial i0
+		state Idle {
+		}
+
+		transition t0 {
+			from i0
+			to Idle
+		}
+	}
+
+	connection ObstacleDetector on scan to DetectorFSM on scan
+	connection DetectorFSM on obstacle to ObstacleDetector on obstacle
+}
+
