@@ -83,13 +83,6 @@ class Machine:
         self.iterator = None
     
     def step_clocks(self):
-        ''' Step all clocks in the context. '''
-        if self.context is not None:
-            for field_name, field_info in self.context.model_fields.items():
-                value = getattr(self.context, field_name)
-                if isinstance(value, Clock):
-                    self.logger.debug(f"Stepping clock '{field_name}'.")
-                    value.step()
         return
 
     def name(self):
@@ -98,20 +91,20 @@ class Machine:
     def get_context(self):
         return self.context
 
-    def execute(self, timed = True, **params):
+    def execute(self, timed = True, exit = False, **params):
         try:
             if self.iterator is None:
-                self.iterator = self.initial()
+                self.iterator = self.initial() # We pass any parameters by value into this method.
                 return next(self.iterator)
             else:
                 if timed:
                     self.step_clocks()
-                return self.iterator.send(timed)
+                return self.iterator.send((timed, exit))
         except StopIteration:
-            self.logger.info(f"Execution of machine '{self.name()}' has finished.")
-            pass
+            self.logger.debug(f"Execution of machine '{self.name()}' has finished.")
+            return MachineStatus.FINISHED
 
-    def initial(self):
+    def initial(self, **params):
         raise NotImplementedError(f"Initial junction of machine '{self.name()}' has not been implemented.")
 
     def enter(self):
@@ -126,18 +119,47 @@ class Machine:
             yield
 
     def exit(self):
-        # Enter substate (if any)
-        result = self.exit_action()
 
-        while result is not MachineStatus.FINISHED:
+        # Enter substate (if any)
+        while self.execute(exit = True) is not MachineStatus.FINISHED:
             self.logger.info(f"Waiting to exit machine '{self.name()}'")
             yield
 
+        # Enter substate (if any)
+        result = self.exit_action()
+        if result is not None:
+            yield from result
+
     def exit_action(self):
-        return MachineStatus.FINISHED
+        return None
 
     def entry_action(self):
         return None
 
     def during_action(self):
         return None
+
+class StateMachine(Machine):
+
+    def step_clocks(self):
+        ''' Step all clocks in the context. '''
+        if self.context is not None:
+            for field_name, field_info in self.context.model_fields.items():
+                value = getattr(self.context, field_name)
+                if isinstance(value, Clock):
+                    self.logger.debug(f"Stepping clock '{field_name}'.")
+                    value.step()
+
+def Generator(func):
+    def wrapper(self, *args, **kwargs):
+        # Call the original function
+        result = func(self, *args, **kwargs)
+        # Yield all if it's already a generator
+        if hasattr(result, '__iter__') and not isinstance(result, (str, bytes)):
+            self.logger.info('Delegating because an iter exists')
+            yield from result
+
+        self.iterator = None
+        # Then yield once more at the end
+        yield MachineStatus.FINISHED
+    return wrapper
