@@ -25,11 +25,9 @@ setup(
     entry_points={
         'console_scripts': [
             'week_4 = week_4.week_4:main',
-            'week_4_coroutines = week_4.week_4_coroutines:main',
-            'week_4_coroutines_async = week_4.week_4_coroutines_async:main',
-            'week_4_coroutines_simple = week_4.week_4_coroutines_simple:main',
             'sample_forward_machine = week_4.sample_forward_machine:main',
             'sample_forward_turning_machine = week_4.sample_forward_turning:main',
+            'sample_driving_machine = week_4.sample_driving_machine:main'
         ],
     },
 )
