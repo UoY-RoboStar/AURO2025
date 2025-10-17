@@ -26,7 +26,7 @@ setup(
         'console_scripts': [
             'week_4 = week_4.week_4:main',
             'sample_forward_machine = week_4.sample_forward_machine:main',
-            'sample_forward_turning_machine = week_4.sample_forward_turning:main',
+            'sample_forward_turning_machine = week_4.sample_forward_turning_machine:main',
             'sample_driving_machine = week_4.sample_driving_machine:main'
         ],
     },
