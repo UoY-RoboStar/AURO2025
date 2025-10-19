@@ -33,3 +33,6 @@ Comment=Creates XAuthority symlink
 ```
 
 Usually, this file is stored at `~/.Xauthority` when running under X11, however sessions running under Wayland, which is the default in recent versions of Ubuntu, expose an X Server via Xwayland, with the `XAuhtority` file being created at an unpredictable location, usually under `$XDG_RUNTIME_DIR/.mutter-Xwaylandauth.XXXXX`. Because any mounts configured for a Docker container become permanent, it becomes impractical to change them later on from the `devcontainer.json`, unless the container is deleted. For this reason, the Dev Container configuration for Linux requires that the `.XAuthority` file is available at `/.X11authority` instead.
+
+Depending on your GPU, you may also need to change the device under `runArgs` to use the appropriate interface. For Intel/AMD, the default `/dev/dri`
+should be adequate.

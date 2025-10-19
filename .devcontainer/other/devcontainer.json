@@ -12,6 +12,10 @@
     "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
     "source=${localEnv:HOME}/.X11authority,target=/home/ubuntu/.Xauthority,type=bind"
   ],
+  // Uncomment the following for running with Intel/AMD GPU acceleration
+  "runArgs": [
+    "--device=/dev/dri"
+  ],
   "remoteUser": "ubuntu",
   "portsAttributes": {
       "6080": {
