@@ -29,6 +29,7 @@
     "LD_LIBRARY_PATH": "/usr/lib/wsl/lib",
     "WAYLAND_DISPLAY": "wayland-0",
     "DISPLAY": ":0",
-    "PULSE_SERVER": "/mnt/wslg/PulseServer"
+    "PULSE_SERVER": "/mnt/wslg/PulseServer",
+    "GALLIUM_DRIVER": "d3d12"
   }
 }
