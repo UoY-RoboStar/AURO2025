@@ -1,0 +1,53 @@
+
+interface IOperations {
+	cmd_vel (  msg : Twist )
+}
+
+interface IEvents {
+	event scan : Seq( real )
+}
+
+robotic platform TurtleBot {
+	uses IEvents 
+	provides IOperations 
+}
+
+datatype Twist { 
+	linear : Vector3
+	angular : Vector3
+} 
+
+datatype Vector3 { 
+	x : real 
+	y : real 
+	z : real
+} 
+
+  
+
+
+controller Driving {
+	requires IOperations 
+	stm stm0 {
+		const lvel : real, avel : real
+		requires IOperations 
+		state Forward {
+			entry cmd_vel ( Twist (| linear = Vector3 (| x = lvel , y = 0 , z = 0 |) , angular = Vector3 (| x = 0 , y = 0 , z = avel |) |) )
+		}
+
+		transition t0 {
+			from I to
+			Forward
+		action # C
+		}
+	initial I
+		clock C
+	}
+
+}
+
+module Module {
+	rref rp_ref0 = TurtleBot
+	cref ctrl_ref0 = Driving
+}
+
