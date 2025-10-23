@@ -41,6 +41,11 @@ import relation_toolkit::*
 			condition min ( ran ( extract ( [ 271 , 330 ] , data ) ) ) < SCAN_THRESHOLD
 			action obstacle ! Direction :: right
 		}
+	transition t5 {
+			from j0
+			to Idle
+			condition not ( min ( ran ( extract ( union ( [ 331 , 359 ] , [ 0 , 30 ] ) , data ) ) ) < SCAN_THRESHOLD \/ min ( ran ( extract ( [ 31 , 90 ] , data ) ) ) < SCAN_THRESHOLD \/ min ( ran ( extract ( [ 271 , 330 ] , data ) ) ) < SCAN_THRESHOLD )
+		}
 	}
 
 	connection ObstacleDetector on scan to DetectorFSM on scan
