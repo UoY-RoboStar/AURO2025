@@ -20,9 +20,12 @@
                                   library="libargos_ros_bridge">
       <actuators>
         <differential_steering implementation="default" />
+        <leds                  implementation="default" medium="leds" />
       </actuators>
       <sensors>
         <footbot_proximity implementation="default" show_rays="true" />
+        <footbot_light                       implementation="rot_z_only" show_rays="true" />
+        <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
       </sensors>
       <params stopWithoutSubscriberCount="10" />
     </argos_ros_bot_controller>
@@ -33,7 +36,6 @@
   <!-- * Arena configuration * -->
   <!-- *********************** -->
   <arena size="5, 5, 1" center="0,0,0.5">
-
     <box id="wall_north" size="4,0.1,0.5" movable="false">
       <body position="0,2,0" orientation="0,0,0" />
     </box>
@@ -102,7 +104,9 @@
   <!-- ********* -->
   <!-- * Media * -->
   <!-- ********* -->
-  <media />
+  <media>
+    <led id="leds" />
+  </media>
 
   <!-- ****************** -->
   <!-- * Visualization * -->

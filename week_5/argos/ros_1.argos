@@ -72,6 +72,7 @@
       -->
       <actuators>
         <differential_steering implementation="default" />
+        <leds                  implementation="default" medium="leds" />
       </actuators>
       <!--
           The <sensors> section contains a list of the sensors used by
@@ -83,6 +84,8 @@
       -->
       <sensors>
         <footbot_proximity implementation="default" show_rays="true" />
+        <footbot_light                       implementation="rot_z_only" show_rays="true" />
+        <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
       </sensors>
       <!--
           The <params> section is passed as-is to the controller's Init()
@@ -167,7 +170,9 @@
 
       $ argos3 -q media
   -->
-  <media />
+  <media>
+    <led id="leds" />
+  </media>
 
   <!-- ****************** -->
   <!-- * Visualization * -->
