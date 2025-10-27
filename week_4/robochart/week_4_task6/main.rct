@@ -94,7 +94,7 @@ stm TurtleBot3FSMC {
 		}
 		transition t1 {
 			from Driving
-			to p0
+			to j0
 			trigger obstacle ? obs
 			action # C
 		}
@@ -103,7 +103,7 @@ stm TurtleBot3FSMC {
 		transition t2 {
 			from p0
 			to Rotating
-			probability 0.5
+			probability 0.4
 		action move ( 0 , - avel )
 		}
 	requires IMove uses IObstacle var obs : Direction
@@ -111,15 +111,33 @@ stm TurtleBot3FSMC {
 		transition t3 {
 			from p0
 			to Rotating
-			probability 0.5
+			probability 0.6
 		action move ( 0 , avel )
 		}
 		transition t4 {
 			from Rotating
 			to Driving
-			action rotate ( PI / 2 )
+			action rotate ( PI / 5 )
 	}
-	uses IYaw }
+	uses IYaw junction j0
+	transition t5 {
+		from j0
+		to Rotating
+		condition obs == left
+		action move ( 0 , - avel )
+	}
+	transition t6 {
+		from j0
+		to Rotating
+		condition obs == Direction :: right
+		action move ( 0 , avel )
+	}
+	transition t7 {
+		from j0
+		to p0
+		condition obs == front
+	}
+}
 
 module Module {
 	rref rp_ref0 = TurtleBot
@@ -147,13 +165,13 @@ operation rotate ( angle : real
 	uses IYaw requires MoveParams var init : real , current : real
 	initial i0
 	state s0 {
-		entry yaw ? init
 	}
 	junction j0
 	final f0
 	transition t0 {
 		from i0
 		to s0
+	action yaw ? init
 	}
 	transition t1 {
 		from s0
@@ -163,13 +181,13 @@ operation rotate ( angle : real
 	transition t2 {
 		from j0
 		to f0
-		condition ( abs ( init - current ) % ( 2 * PI ) ) - angle <= 0.5
+		condition angle - abs ( ( ( current - init ) + PI ) % ( 2 * PI ) - PI ) <= 0.5
 	}
 	transition t3 {
 		from j0
 		to s0
-		condition ( abs ( init - current ) % ( 2 * PI ) ) - angle > 0.5
+		condition angle - abs ( ( ( current - init ) + PI ) % ( 2 * PI ) - PI ) > 0.5
 	}
 }
 
-function abs ( a : real ) : real { }
+function abs ( a : real ) : real { postcondition ( a >= 0 => result == a ) /\ ( a < 0 => result == - a ) }

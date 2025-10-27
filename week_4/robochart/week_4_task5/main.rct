@@ -148,13 +148,13 @@ operation rotate ( angle : real
 	uses IYaw requires MoveParams var init : real , current : real
 	initial i0
 	state s0 {
-		entry yaw ? init
 	}
 	junction j0
 	final f0
 	transition t0 {
 		from i0
 		to s0
+		action yaw ? init
 	}
 	transition t1 {
 		from s0
@@ -164,13 +164,13 @@ operation rotate ( angle : real
 	transition t2 {
 		from j0
 		to f0
-		condition ( abs ( init - current ) % ( 2 * PI ) ) - angle <= 0.5
+		condition angle - abs ( ( ( current - init ) + PI ) % ( 2 * PI ) - PI ) <= 0.5
 	}
 	transition t3 {
 		from j0
 		to s0
-		condition ( abs ( init - current ) % ( 2 * PI ) ) - angle > 0.5
+		condition angle - abs ( ( ( current - init ) + PI ) % ( 2 * PI ) - PI ) > 0.5
 	}
 }
 
-function abs ( a : real ) : real { }
+function abs ( a : real ) : real { postcondition ( a >= 0 => result == a ) /\ ( a < 0 => result == - a ) }
