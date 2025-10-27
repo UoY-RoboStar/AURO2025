@@ -1,0 +1,54 @@
+import sequence_toolkit::* 
+import set_toolkit::* 
+import relation_toolkit::*
+
+ controller ObstacleDetector {
+	uses IEvents uses IObstacle stm DetectorFSM {
+		uses IEvents uses IObstacle var data : Seq( real )
+
+		const SCAN_THRESHOLD : real
+		initial i0
+		state Idle {
+		}
+		junction j0
+
+		transition t0 {
+			from i0
+			to Idle
+		}
+		transition t1 {
+			from Idle
+			to j0
+			trigger 
+			
+			scan ? data
+		}
+		transition t2 {
+			from j0
+			to Idle
+			condition min ( ran ( extract ( union ( [ 331 , 359 ] , [ 0 , 30 ] ) , data ) ) ) < SCAN_THRESHOLD
+			action obstacle ! Direction :: front
+		}
+		transition t4 {
+			from j0
+			to Idle
+			condition min ( ran ( extract ( [ 31 , 90 ] , data ) ) ) < SCAN_THRESHOLD
+			action obstacle ! Direction :: left
+		}
+		transition t3 {
+			from j0
+			to Idle
+			condition min ( ran ( extract ( [ 271 , 330 ] , data ) ) ) < SCAN_THRESHOLD
+			action obstacle ! Direction :: right
+		}
+	transition t5 {
+			from j0
+			to Idle
+			condition not ( min ( ran ( extract ( union ( [ 331 , 359 ] , [ 0 , 30 ] ) , data ) ) ) < SCAN_THRESHOLD \/ min ( ran ( extract ( [ 31 , 90 ] , data ) ) ) < SCAN_THRESHOLD \/ min ( ran ( extract ( [ 271 , 330 ] , data ) ) ) < SCAN_THRESHOLD )
+		}
+	}
+
+	connection ObstacleDetector on scan to DetectorFSM on scan
+	connection DetectorFSM on obstacle to ObstacleDetector on obstacle
+}
+

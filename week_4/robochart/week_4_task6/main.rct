@@ -1,0 +1,193 @@
+
+interface IOperations {
+	cmd_vel (  msg : Twist )
+}
+
+interface IEvents {
+	event scan : Seq( real )
+}
+
+interface IMove {
+	move ( lvel : real , avel : real )
+rotate ( angle : real )
+}
+
+interface IObstacle {
+	event obstacle : Direction
+}
+
+interface IYaw {
+	event yaw : real
+}
+
+interface MoveParams {
+	const avel : real
+	const PI : real
+}
+
+robotic platform TurtleBot {
+	uses IEvents 
+	provides IOperations 
+uses IYaw }
+
+datatype Twist { 
+	linear : Vector3
+	angular : Vector3
+} 
+
+datatype Vector3 { 
+	x : real 
+	y : real 
+	z : real
+} enumeration Direction { left right front } 
+
+controller Driving {
+	requires IOperations 
+	
+	sref stm_ref0 = TurtleBot3FSMC
+
+	uses IObstacle uses IYaw
+
+	opref op_ref0 = move
+connection Driving on obstacle to stm_ref0 on obstacle
+opref op_ref1 = rotate
+	connection Driving on yaw to stm_ref0 on yaw
+}
+
+stm TurtleBot3FSMC {
+		const lvel : real , avel : real , PI : real
+		
+		requires IOperations state Driving {
+			initial i0
+			state Turning {
+				entry move ( 0 , avel )
+			}
+			state Forward {
+				entry move ( lvel , 0 )
+			}
+			transition t2 {
+				from Turning
+				to Forward
+				condition since ( C ) > 1
+				action # C
+			}
+			transition t0 {
+				from i0
+				to Forward
+				action # C
+			}
+			transition t1 {
+				from Forward
+				to Turning
+				condition since ( C ) > 5
+				action 
+			# C
+			}
+		}
+		initial i0
+
+		transition t0 {
+			from i0
+			to Driving
+		}
+	state Rotating {
+		}
+		transition t1 {
+			from Driving
+			to j0
+			trigger obstacle ? obs
+			action # C
+		}
+		clock C
+
+		transition t2 {
+			from p0
+			to Rotating
+			probability 0.4
+		action move ( 0 , - avel )
+		}
+	requires IMove uses IObstacle var obs : Direction
+	probabilistic p0
+		transition t3 {
+			from p0
+			to Rotating
+			probability 0.6
+		action move ( 0 , avel )
+		}
+		transition t4 {
+			from Rotating
+			to Driving
+			action rotate ( PI / 5 )
+	}
+	uses IYaw junction j0
+	transition t5 {
+		from j0
+		to Rotating
+		condition obs == left
+		action move ( 0 , - avel )
+	}
+	transition t6 {
+		from j0
+		to Rotating
+		condition obs == Direction :: right
+		action move ( 0 , avel )
+	}
+	transition t7 {
+		from j0
+		to p0
+		condition obs == front
+	}
+}
+
+module Module {
+	rref rp_ref0 = TurtleBot
+	cref ctrl_ref0 = Driving
+connection rp_ref0 on scan to ctrl_ref1 on scan ( _async )
+	connection ctrl_ref1 on obstacle to ctrl_ref0 on obstacle
+	cref ctrl_ref1 = ObstacleDetector
+connection rp_ref0 on yaw to ctrl_ref0 on yaw ( _async )
+}
+
+operation move ( lvel : real
+, avel : real
+) {
+	requires IOperations initial i0
+	final f0
+	transition t0 {
+		from i0
+		to f0
+		action cmd_vel ( Twist (| linear = Vector3 (| x = lvel , y = 0 , z = 0 |) , angular = Vector3 (| x = 0 , y = 0 , z = avel |) |) )
+	}
+}
+
+operation rotate ( angle : real
+) {
+	uses IYaw requires MoveParams var init : real , current : real
+	initial i0
+	state s0 {
+	}
+	junction j0
+	final f0
+	transition t0 {
+		from i0
+		to s0
+	action yaw ? init
+	}
+	transition t1 {
+		from s0
+		to j0
+		trigger yaw ? current
+	}
+	transition t2 {
+		from j0
+		to f0
+		condition angle - abs ( ( ( current - init ) + PI ) % ( 2 * PI ) - PI ) <= 0.5
+	}
+	transition t3 {
+		from j0
+		to s0
+		condition angle - abs ( ( ( current - init ) + PI ) % ( 2 * PI ) - PI ) > 0.5
+	}
+}
+
+function abs ( a : real ) : real { postcondition ( a >= 0 => result == a ) /\ ( a < 0 => result == - a ) }
