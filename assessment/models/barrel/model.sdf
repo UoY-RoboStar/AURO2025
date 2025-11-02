@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+    <model name="barrel">
+      <pose>0 0 0 0 0 0</pose>
+      <static>false</static>
+      <link name="body">
+        <inertial>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.002645833</ixx>
+            <ixy>0.0</ixy>
+            <ixz>0.0</ixz>
+            <iyy>0.002645833</iyy>
+            <iyz>0.0</iyz>
+            <izz>0.001125</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://meshes/barrel_visual.stl</uri>
+              <scale>0.005 0.005 0.005</scale>
+            </mesh>
+            <!-- <sphere>
+              <radius>0.075</radius>
+            </sphere> -->
+          </geometry>
+          <material>
+            <script>
+              <uri>model://materials/assessment_materials.material</uri>
+              <name>red_outlined</name>
+            </script>
+          </material>
+        </visual>
+        <collision name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://meshes/barrel_collision.stl</uri>
+              <scale>0.005 0.005 0.005</scale>
+            </mesh>
+          </geometry>
+          <friction>
+            <torsional>
+                <coefficient>0</coefficient>
+                <patch_radius>0.1</patch_radius>
+                <ode>
+                    <slip>100</slip>
+                </ode>
+                </torsional>
+            <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+                <slip1>10</slip1>
+                <slip2>10</slip2>
+            </ode>
+          </friction>
+        </collision>
+      </link>
+    </model>
+</sdf>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>assessment</name>
+  <version>0.0.0</version>
+  <description>AURO2025 assessment package</description>
+  <maintainer email="pedro.ribeiro@york.ac.uk">pefribeiro</maintainer>
+  <license>TODO: License declaration</license>
+
+  <exec_depend>ros2launch</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <depend>cv_bridge</depend>
+  <depend>opencv</depend>
+  <depend>rclcpp</depend>
+  <depend>rclpy</depend>
+  <depend>assessment_interfaces</depend>
+  <depend>image_transport</depend>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

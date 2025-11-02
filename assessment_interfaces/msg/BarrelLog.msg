@@ -1,0 +1,3 @@
+uint8 red_count
+uint8 blue_count
+uint8 total_count
