@@ -19,20 +19,20 @@ in the assessment brief, with parameters used to launch `solution_launch.py`. Th
 `rcutil.py` can be used to help you check that the `.devcontainer/devcontainer.json`
 is configured correctly, and, among other commands, to zip the workspace for submission.
 
+**Note:** While you are free to use any of the provided .devcontainer configurations (eg. auro-vnc, auro-wsl, or auro-linux) for development, it is your responsibility to ensure that for submission the `.devcontainer/devcontainer.json` (auro-vnc) is configured appropriately and that it executes properly.
+
 # Task
 Your implementation task, as described in the assessment paper, is to design and 
 implement, an autonomous robotic system using TurtleBot3 Waffle Pi robots, running in 
 simulation, that collect barrels in the arena and deposit them in collection zones
 marked in green. 
 
-![Screenshot of simulation environment running in Gazebo](img/sample_environment.jpg)
-
 ## Barrels and zones
 There are two types of **barrels**, identified by distinct colours: red for contaminated barrels,
 and blue for non-contaminated barrels. Similarly, there is a **decontamination zone** marked in cyan.
 A screenshot of a simulation launched using the default parameters is reproduced below:
 
-![Screenshot of simulation environment running in Gazebo](img/assessment_world_launch_sample.jpg)
+![Screenshot of simulation environment running in Gazebo](img/sample_environment.jpg)
 
 ### Towing barrels and offloading them
 Barrels can be attached to a TurtleBot's back when sufficiently close enough and then calling the
@@ -163,7 +163,7 @@ file reuses the launch file `assessment_launch.py`, that launches the simulation
 add new parameters and change the launch file as deemed necessary to implement your solution.
 
 ### Scenarios
-Scenarios for exercising your solution should be specified in the [.devcontainer/devcontainer.json](../.devconatiner/devcontainer.json) file, following the structure outlined below:
+Scenarios for exercising your solution should be specified in the [.devcontainer/devcontainer.json](../../.devcontainer/devcontainer.json) file, following the structure outlined below:
 
 ```
 {
@@ -198,12 +198,12 @@ Scenarios for exercising your solution should be specified in the [.devcontainer
 ```
 
 ## Additional apt and pip packages
-Additional apt and pip packages, if needed, should be specified in the [.devcontainer/devcontainer.json](../.devconatiner/devcontainer.json) file, following the structure outlined above. They can be automatically installed using `./rcutil.py install-dependencies`.
+Additional apt and pip packages, if needed, should be specified in the [.devcontainer/devcontainer.json](../.devcontainer/devcontainer.json) file, following the structure outlined above. They can be automatically installed using the command `./rcutil.py install-dependencies`, which is how your solution will be evaluated.
 
 ## rcutil.py - Checking your ROS2 workspace before submission!
 You are encouraged to make use of the utility [rcutil.py](../rcutil.py) to help with checking that your
 submission is consistent and reproducible. The utility can help with buidling a workspace, cleaning it,
-installing dependencies specified in the [.devcontainer/devcontainer.json](../.devconatiner/devcontainer.json)
+installing dependencies specified in the [.devcontainer/devcontainer.json](../.devcontainer/devcontainer.json)
 file, as well as, list scenarios, execute them, and package the workspace as a ZIP file.
 
 Of particular importance is the subcommand `check-submission`. Further details are available using
