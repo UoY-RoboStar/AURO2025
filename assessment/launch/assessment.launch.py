@@ -43,7 +43,6 @@ def gazebo_world(context : LaunchContext):
     root = tree.getroot()
 
     if obstacles == False:
-        print('Deleting obstacles')
         for world in root.findall('.//world'):
             for model in world.findall('.//model'):
                 if "box" in model.attrib['name'] or "cylinder" in model.attrib['name']:
