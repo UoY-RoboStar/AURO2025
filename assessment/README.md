@@ -25,6 +25,8 @@ implement, an autonomous robotic system using TurtleBot3 Waffle Pi robots, runni
 simulation, that collect barrels in the arena and deposit them in collection zones
 marked in green. 
 
+![Screenshot of simulation environment running in Gazebo](img/sample_environment.jpg)
+
 ## Barrels and zones
 There are two types of **barrels**, identified by distinct colours: red for contaminated barrels,
 and blue for non-contaminated barrels. Similarly, there is a **decontamination zone** marked in cyan.
