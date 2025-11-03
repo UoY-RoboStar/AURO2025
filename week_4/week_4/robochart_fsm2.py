@@ -1,7 +1,7 @@
 
 from pydantic import BaseModel, ConfigDict
 from enum import Enum
-from typing import TypeVar, Generic, Iterator
+from typing import TypeVar, Generic, Iterator, Callable
 import functools
 import inspect
 import types
@@ -51,6 +51,24 @@ class TypedEvent(Generic[T], Event):
     def set(self, value: T = None):
         self.value = value
         super().set()
+        
+    def clear(self):
+        self.value = None
+        super().clear()
+
+class TypedOutputEvent(Generic[T], Event):
+
+    def __init__(self, value: T = None, impl: Callable[[T],None] = None):
+        self.value = value
+        self.impl = impl
+        super().__init__()
+        
+    def set(self, value: T = None):
+        self.value = value
+        super().set()
+        if self.impl is not None:
+            self.impl(self.value)
+            super().clear
         
     def clear(self):
         self.value = None

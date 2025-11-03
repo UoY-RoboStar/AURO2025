@@ -35,7 +35,8 @@ setup(
             'week_4_task4_DetectorFSM = week_4.week_4_task4_DetectorFSM:main',
             'week_4_task4_TurtleBot3FSMC = week_4.week_4_task4_TurtleBot3FSMC:main',
             'week_4_task5_TurtleBot3FSMC = week_4.week_4_task5_TurtleBot3FSMC:main',
-            'week_4_task6_TurtleBot3FSMC = week_4.week_4_task6_TurtleBot3FSMC:main'
+            'week_4_task6_TurtleBot3FSMC = week_4.week_4_task6_TurtleBot3FSMC:main',
+            'week_4_task7_PrioritisedNode = week_4.week_4_task7_PrioritisedNode:main'
         ],
     },
 )
