@@ -1,0 +1,56 @@
+datatype Twist { 
+	linear : Vector3
+	angular : Vector3
+} 
+
+datatype Vector3 { 
+	x : real 
+	y : real 
+	z : real
+}
+
+interface IEvents {
+event cmd_vel_1 : Twist
+	event cmd_vel_2 : Twist
+	event cmd_vel : Twist
+}
+
+stm PrioritisedNode {
+uses IEvents var msg : Twist
+	initial i0
+	state NotReceived1 {
+	}
+	state Received {
+		entry cmd_vel ! msg <{ 0 }
+	}
+	transition t0 {
+		from i0
+		to NotReceived1
+	}
+	transition t1 {
+		from NotReceived1
+		to Received
+		trigger cmd_vel_1 ? msg
+		# C
+	}
+	transition t2 {
+		from NotReceived1
+		to NotReceived1
+		trigger cmd_vel_2 ? msg
+		action cmd_vel ! msg <{ 0 }
+	}
+	transition t3 {
+		from Received
+		to Received
+		trigger cmd_vel_1 ? msg
+		# C
+	}
+	transition t4 {
+		from Received
+		to Received
+		trigger cmd_vel_2 ? msg
+		condition since ( C ) > 1
+	}
+	clock C
+}
+
