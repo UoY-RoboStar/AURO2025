@@ -27,6 +27,7 @@ class PrioritisedNodeMachine(StateMachine):
         # No entry action
         self.logger.info("In state 'NotReceived1'")
 
+        # Check transitions out of state NotReceived1
         while True:
             if self.context.cmd_vel_1.is_triggered():
                 self.context.msg = self.context.cmd_vel_1.value
@@ -50,7 +51,7 @@ class PrioritisedNodeMachine(StateMachine):
         # Entry action
         self.context.cmd_vel.set(self.context.msg)
 
-        # Check transitions out of state Turning
+        # Check transitions out of state Received
         while True:
             if self.context.cmd_vel_1.is_triggered():
                 self.context.msg = self.context.cmd_vel_1.value
