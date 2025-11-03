@@ -130,7 +130,7 @@ In particular, the following options may be useful to specify different simulati
 
 * `barrels` : Configures whether to launch the `barrel_manager` node.
 * `experiment_duration` : How to long to run the simulation for (specified in seconds of simulation time) before terminating the simulation automatically. By default this is set to 840 seconds of simulation time.
-* `initial_pose_package` : Allows changing the node in which to look for the default pose configuration of the robot(s).
+* `initial_pose_package` : Allows changing the ROS package in which to look for the default pose configuration of the robot(s).
 * `initial_pose_file` : Allows changing the yaml file containing the initial pose configuration of the robot(s), where this is relative to the package name passed to `initial_pose_package`.
 * `num_robots`: Number of robots to spawn.
 * `obstacles`: Whether the world contains obstacles in the large room.
