@@ -198,7 +198,7 @@ Scenarios for exercising your solution should be specified in the [.devcontainer
 ```
 
 ## Additional apt and pip packages
-Additional apt and pip packages, if needed, should be specified in the [.devcontainer/devcontainer.json](../.devcontainer/devcontainer.json) file, following the structure outlined above. They can be automatically installed using the command `./rcutil.py install-dependencies`, which is how your solution will be evaluated.
+Additional apt and pip packages, if needed, should be specified in the [.devcontainer/devcontainer.json](../.devcontainer/devcontainer.json) file, following the structure outlined above. They can be automatically installed using the command `./rcutil.py install-dependencies`, which is how additional packages will installed, upon evaluating your submitted solution.
 
 ## rcutil.py - Checking your ROS2 workspace before submission!
 You are encouraged to make use of the utility [rcutil.py](../rcutil.py) to help with checking that your
