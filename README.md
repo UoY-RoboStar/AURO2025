@@ -36,3 +36,12 @@ Usually, this file is stored at `~/.Xauthority` when running under X11, however 
 
 Depending on your GPU, you may also need to change the device under `runArgs` to use the appropriate interface. For Intel/AMD, the default `/dev/dri`
 should be adequate.
+
+### auro-vnc
+To use auro-vnc on a Mac with Apple Silicon (arm64) machine, because the underlying Docker image is for the amd64 architecture, the first time you use the Dev Container you will need to pull the Docker image from the command line using the following command:
+
+```
+docker pull --platform linux/amd64 ghcr.io/uoy-robostar/ros2-tb3/auro-dev:latest
+```
+
+Afterwards, if needed, you can update the image using the Docker Desktop interface.
