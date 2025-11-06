@@ -1,0 +1,29 @@
+1:
+  robot1:
+    x:   0.5
+    y:  -1.0
+    yaw: 0.0
+
+2:
+  robot1:
+    x:   0.5
+    y:  -1.0
+    yaw: 0.0
+  robot2:
+    x:   1.5
+    y:  -1.0
+    yaw: 0.0
+
+3:
+  robot1:
+    x:   0.5
+    y:  -1.0
+    yaw: 0.0
+  robot2:
+    x:   1.5
+    y:  -1.0
+    yaw: 0.0
+  robot3:
+    x:   2.0
+    y:  -1.0
+    yaw: 0.0

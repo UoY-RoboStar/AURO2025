@@ -69,6 +69,10 @@ class BarrelManager(Node):
     def __init__(self):
         super().__init__('barrel_manager')
 
+        # ROS2 parameters for node
+        self.declare_parameter('random_seed', 0)
+        random.seed(self.get_parameter('random_seed').value)
+
         # Load and configure barrel models
         self.item_models = {}
         self.load_and_configure_models()
