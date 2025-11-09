@@ -17,7 +17,7 @@ the Dev Container configuration contained in this repository to get started with
 * `.devcontainer/wsl/devcontainer.json`: Allows use of WSL2 to interact with GUI applications showing them natively on the Windows desktop. This option also takes advantage of GPU available on the host for rendering by leveraging support for translating OpenGL calls to Direct3D.
 * `.devcontainer/other/devcontainer.json`: Allows use of X11 for natively running the container on Linux with Docker. GUI applications are shown on the host operating system. See section below for additional configuration that is required.
 
-### Linux X11 native
+### auro-linux (Linux X11 native)
 
 The configuration assumes that the X11 cookie is available at `~/.X11authority`. Therefore, to use this configuration you should configure a symlink from `~/.X11authority` to `${XAUTHORITY}` when the session is started. For GNOME, this can be achieved, for example, by adding a new file under `~/.config/autostart` with the following content:
 
@@ -37,6 +37,13 @@ Usually, this file is stored at `~/.Xauthority` when running under X11, however 
 Depending on your GPU, you may also need to change the device under `runArgs` to use the appropriate interface. For Intel/AMD, the default `/dev/dri`
 should be adequate.
 
+### auro-wsl
+If using this configuration on a device that has an NVIDIA card, you may need to set the environment variable `MESA_D3D12_DEFAULT_ADAPTER_NAME` to `NVIDIA`, for example, using the command:
+```
+export MESA_D3D12_DEFAULT_ADAPTER_NAME=NVIDIA
+```
+You could make this permanent by extending the [`containerEnv`](https://github.com/UoY-RoboStar/AURO2025/blob/e7f7ab9b6657aad4d8715cd908829bc9dbb09e73/.devcontainer/wsl/devcontainer.json#L28-L33) section of the `.devcontainer/wsl/devcontainer.json` file, though note that you may need to change it back to use the configuration in the CS labs. You could, alternatively, consider creating a new configuration in your own repository.
+
 ### auro-vnc
 To use auro-vnc on a Mac with Apple Silicon (arm64) machine, because the underlying Docker image is for the amd64 architecture, the first time you use the Dev Container you will need to pull the Docker image from the command line using the following command:
 
@@ -44,4 +51,4 @@ To use auro-vnc on a Mac with Apple Silicon (arm64) machine, because the underly
 docker pull --platform linux/amd64 ghcr.io/uoy-robostar/ros2-tb3/auro-dev:latest
 ```
 
-Afterwards, if needed, you can update the image using the Docker Desktop interface.
+Afterwards, if needed, you should be able to update the image using the Docker Desktop interface. If not, you can use the above command again.
