@@ -31,7 +31,8 @@ setup(
     entry_points={
         'console_scripts': [
             'week_6 = week_6.week_6:main',
-            'path_publisher = week_6.path_publisher:main'
+            'path_publisher = week_6.path_publisher:main',
+            'task7_data_collector = week_6.task7_data_collector:main'
         ],
     },
 )

@@ -116,7 +116,7 @@ def group_action(context : LaunchContext):
                 output='screen',
                 parameters=[{'publish_image_barrels': True, 
                              'publish_image_zones': False, 
-                             'skip_similar_frames': True, 
+                             'skip_similar_frames': False, 
                              'publish_image_zones_mask': False}]),
 
             Node(
