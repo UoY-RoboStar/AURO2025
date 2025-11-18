@@ -1,0 +1,1 @@
+Sample map solutions are available in this folder.
