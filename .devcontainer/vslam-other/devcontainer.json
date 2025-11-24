@@ -1,0 +1,32 @@
+// Use this devcontainer.json to develop within a standard Docker environment,
+// with VNC providing the GUI support.
+// It uses the prebuilt image from the GitHub Container Registry,
+// so does not require a Dockerfile.
+{
+  "name": "vslam-linux",
+  "image": "ghcr.io/uoy-robostar/ros2-tb3/vslam:main",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE},target=/home/ubuntu/homedir,type=bind",
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
+    "source=${localEnv:HOME}/.X11authority,target=/home/ubuntu/.Xauthority,type=bind"
+  ],
+  "runArgs": [
+    "--device=/dev/dri"
+  ],
+  "remoteUser": "ubuntu",
+  "portsAttributes": {
+      "6080": {
+          "label": "Desktop"
+      }
+  },
+  "postStartCommand": "touch /workspaces/.bash_history && ln -sf /workspaces/.bash_history /home/ubuntu/.bash_history ; /workspaces/${localWorkspaceFolderBasename}/.devcontainer/gitconfig.sh ; /workspaces/${localWorkspaceFolderBasename}/.devcontainer/other/fix-permissions.sh",
+  "remoteEnv": {
+    "USERNAME": "${localEnv:USERNAME}",
+    "USERDNSDOMAIN": "${localEnv:USERDNSDOMAIN}"
+  },
+  "containerEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}"
+  }
+}
