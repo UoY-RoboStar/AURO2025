@@ -1,0 +1,27 @@
+Camera:
+  name: AIST_Living_Lab
+  setup: monocular
+  model: perspective
+  fps: 30.0
+  cols: 1920   #modifiy to fit the frame width and height of your video images
+  rows: 960
+
+  fx: 525.0
+  fy: 525.0
+  cx: 960.0
+  cy: 480.0
+
+  k1: 0.0
+  k2: 0.0
+  p1: 0.0
+  p2: 0.0
+  k3: 0.0               
+
+  color_order: RGB       # optional but helps visualization
+
+Feature:
+  max_num_keypoints: 2000
+  scale_factor: 1.2
+  num_levels: 8
+  ini_fast_threshold: 20
+  min_fast_threshold: 7
