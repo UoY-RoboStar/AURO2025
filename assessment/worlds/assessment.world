@@ -345,7 +345,7 @@
           <geometry>
             <mesh>
               <uri>model://meshes/decontamination_zone.stl</uri>
-              <scale>0.01 0.01 0.01</scale>
+              <scale>0.01 0.006 0.01</scale>
             </mesh>
           </geometry>
         </collision>
@@ -450,7 +450,7 @@
           <geometry>
             <mesh>
               <uri>model://meshes/decontamination_zone.stl</uri>
-              <scale>0.01 0.01 0.01</scale>
+              <scale>0.01 0.006 0.01</scale>
             </mesh>
           </geometry>
         </collision>
