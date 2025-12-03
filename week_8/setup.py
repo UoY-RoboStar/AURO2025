@@ -49,8 +49,15 @@ setup(
     entry_points={
         'console_scripts': [
             'robot_controller = week_8.robot_controller:main',
+            'joint_state_republisher = week_8.joint_state_republisher:main',
+            'path_publisher = week_8.path_publisher:main',
             'autonomous_navigation = week_8.autonomous_navigation:main',
             'autonomous_navigation_multithreaded = week_8.autonomous_navigation_multithreaded:main',
+            'task2 = week_8.task2:main',
+            'task3 = week_8.task3:main',
+            'task4 = week_8.task4:main',
+            'task5 = week_8.task5:main',
+            'task8 = week_8.task8:main'
         ],
     },
 )
