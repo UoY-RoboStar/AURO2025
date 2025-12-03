@@ -1,0 +1,38 @@
+
+--
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 03-12-2025 22:55:30
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "core_timed_defs.csp"
+include "file_main_defs.csp"
+include "core_defs.csp"
+include "state_timed_defs.csp"
+include "ctrl0_stm0.csp"
+include "robochart_defs.csp"
+include "../instantiations.csp"
+
+transparent wbisim
+channel r__
+-- generate ctrl0_stm0
+P_ctrl0_stm0 = let
+	id__ = 0
+	
+	
+	
+within
+	ctrl0_stm0::O__(
+		id__
+	)
+assert P_ctrl0_stm0 :[deadlock-free]	
+assert P_ctrl0_stm0;RUN({r__}) :[deadlock-free]
+assert P_ctrl0_stm0 :[deterministic]
+assert P_ctrl0_stm0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_ctrl0_stm0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_ctrl0_stm0

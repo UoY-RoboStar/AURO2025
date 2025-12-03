@@ -1,0 +1,1489 @@
+
+--
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 03-12-2025 22:55:30
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+	module ctrl1
+		shared_variable_events = {|
+		|}
+		
+	exports
+		transparent diamond
+		transparent sbisim
+		transparent dbisim
+		transparent chase
+
+		-- declaring controller events
+		channel left: InOut.core_nat
+		channel right: InOut.core_nat
+		
+		
+		
+		-- declaring call and ret events for undefined operations
+		
+		-- declaring controller termination channel
+		channel terminate
+		
+		-- channel set with all visible events
+		sem__events = {|
+			terminate
+		,	left,
+			right
+		|}
+		
+		-- set of visible memory events
+		visibleMemoryEvents = {||}
+
+		-- defined operations
+	
+		-- declaring machines
+		module stm0
+		exports
+			transparent diamond
+			transparent sbisim
+			transparent dbisim
+			transparent chase
+		
+			-- Transition identifiers
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i0|
+			              NID_s0|
+			              NID_s1
+			
+			channel internal__ : NIDS
+			
+			-- Flow channels		
+			channel interrupt
+			channel exited
+			channel exit
+			channel terminate
+			
+			-- Variable channels
+			channel get_x, set_x, setL_x, setR_x: core_nat
+			
+			-- Shared variable channels
+			
+			-- Local variable channels for defined operations that are required by the state machine
+			
+			-- Declaring state machine events
+			channel left__: NIDS.InOut.core_nat
+			channel left: InOut.core_nat
+			channel right__: NIDS.InOut.core_nat
+			channel right: InOut.core_nat
+			channel ack__: NIDS.InOut
+			channel ack: InOut
+			
+			-- Declaring call and ret events for undefined operations
+			
+			enterSS = {|
+			i0::enter,
+			s0::enter,
+			s1::enter
+			|}
+			
+			enteredSS = 	{|
+			s0::entered,
+			s1::entered
+			|}
+			
+			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+			
+			shared_variable_events = {|
+			|}
+			
+			-- channel set with all visible events
+			sem__events = {|
+				terminate
+			,	left,
+				right,
+				ack
+				|}
+			
+			channel clockReset, clockResetL, clockResetR 
+			
+			localClockResets = {||}
+			
+			
+			channel get_CLID_s1 : core_clock_type 
+			channel get_CLID_s0 : core_clock_type 
+			--channel increment__
+			
+			CLID_s1_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_s0_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+		
+				-- Nodes --
+				-- declaring all nodes
+				
+				----------------------------------------------------------------------
+				-- Initial: i0
+				module i0
+				exports
+				
+					channel enter, interrupt
+					
+					Timed(OneStep) {
+						D__(id__) = 
+							dbisim(let
+								Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+								
+								Termination = terminate -> SKIP
+								
+								Active 		= share__choice(interrupt -> SKIP) ; Inactive
+							within
+								Inactive [| {terminate} |> SKIP)
+						
+						VS_O__(id__) = D__(id__)
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				----------------------------------------------------------------------
+				-- State: s0
+				module s0
+				
+				enterSS = {}
+				
+				enteredSS = {}
+				
+				exports
+				
+					--  Declarations
+					
+					channel enter, entered, interrupt
+					channel enteredL, enteredR
+					
+									
+					
+					--channel increment__
+					
+					
+					--	Nodes
+					-- declaring all nodes
+					
+					
+					Timed(OneStep) {
+						--	Rule: behaviours(Node)
+						--  Note that FDR has problems with efficiently compiling the process below
+						-- 	if using a different recursion pattern.
+						D__(id__) = 
+						dbisim(let
+							-- IMPLEMENTATION NOTE: 
+							-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+							-- however FDR struggles with that form in certain cases. So we use the exception operator
+							-- instead to 'terminate'.
+							
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+							
+						VS_O__(id__) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+						
+						-- Clocks
+						
+						StateClocks(id__) = terminate -> SKIP
+						
+						stateClockSync = {||}
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				----------------------------------------------------------------------
+				-- State: s1
+				module s1
+				
+				enterSS = {}
+				
+				enteredSS = {}
+				
+				exports
+				
+					--  Declarations
+					
+					channel enter, entered, interrupt
+					channel enteredL, enteredR
+					
+									
+					
+					--channel increment__
+					
+					
+					--	Nodes
+					-- declaring all nodes
+					
+					
+					Timed(OneStep) {
+						--	Rule: behaviours(Node)
+						--  Note that FDR has problems with efficiently compiling the process below
+						-- 	if using a different recursion pattern.
+						D__(id__) = 
+						dbisim(let
+							-- IMPLEMENTATION NOTE: 
+							-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+							-- however FDR struggles with that form in certain cases. So we use the exception operator
+							-- instead to 'terminate'.
+							
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+							
+						VS_O__(id__) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+						
+						-- Clocks
+						
+						StateClocks(id__) = terminate -> SKIP
+						
+						stateClockSync = {||}
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				-- END of Nodes --
+				
+				Timed(OneStep) {
+				-- Operation calls --
+				-- Only the undefined operations are declared here.
+				-- If the state machine is in isolation, all required operations will be undefined.
+				-- If it is in the context of a controller, the required operations not provided by the
+				-- controller will be declared here, and the defined operations will be defined in the
+				-- context of the Controller module, and therefore within scope of the state machine module.
+				
+				-- END of Operation calls --
+			
+				-- STM processes
+				STM(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+				( 
+					(
+						(
+							(IteratedStateful(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+						 	[[ share__ <- x__ | x__ <- {||} ]]
+						)
+					[| {share__} |]
+					SKIP
+					)
+					[| union(sharedVarSync,{terminate}) |]
+					dbisim(sharedVarMemory(id__))
+				)\sharedVarHide
+				
+				STM_VS_O(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+				( 
+					(
+						(
+							(IteratedStateful_VS_O(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+						 	[[ share__ <- x__ | x__ <- {||} ]]
+						)
+					[| {share__} |]
+					SKIP
+					)
+					[| union(sharedVarSync,{terminate}) |]
+					dbisim(sharedVarMemory(id__))
+				)\sharedVarHide
+				
+				-- Transitions
+				Transitions(id__) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; s0::enter -> SKIP))))
+						 [] dbisim((true)&(left__!NID_s0.in?x:{x|x <- core_nat, true} -> share__choice(set_x!x -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_x?x -> true&(share__choice(right.out!x -> SKIP))) ; s1::enter -> SKIP)))
+						 [] dbisim((true)&(ack__!NID_s1.in -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; SKIP ; s0::enter -> SKIP)))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				-- Stateful
+				-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+				
+				-- Named process definitions
+				MachineBody(id__) = 
+					dbisim((
+					let
+						finalNodesEntered = {||}
+					within
+						(dbisim((dbisim((let
+							-- IMPLEMENTATION NOTE:
+							-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							-- modules for defining the semantics of each node.
+							enterSS = {|
+							i0::enter,
+							s0::enter,
+							s1::enter
+							|}
+							hideSet = union(enterSS,{|exit,exited,internal__|})
+						within 
+							((let
+								-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+								-- because CSPM modules are used for the semantics of Node.
+								flowevts = union(enterSS,{|exit,exited,interrupt|})
+								transSync = {|internal__.NID_i0,left__.NID_s0.in,ack__.NID_s1.in|}
+							within
+								((
+								 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+								   i0::D__(id__)
+								   [| { share__, terminate } |] (
+								   s0::D__(id__)
+								   [| { share__, terminate } |] (
+								   s1::D__(id__)
+								   )
+								   )
+								 )
+								 [[s0::interrupt <- x__ | x__ <- {|interrupt,left__.NID_s0.in|}]]
+								 [[s1::interrupt <- x__ | x__ <- {|interrupt,ack__.NID_s1.in|}]]
+								 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+								 )
+								  [[ share__ <- x__ | x__ <- {| share__,setR_x |} ]] 
+								 )
+								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+								 			,setR_x
+								 			|}) |]
+								 ((i0::enter -> Transitions(id__))
+								  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+								  [[set_x <- setR_x]]
+								 )
+								)
+								 [[setR_x <- set_x]]
+								)
+							)
+							 \ hideSet)
+							[[
+								left__.x____ <- left,
+								right__.x____ <- right,
+								ack__.x____ <- ack
+								| x____ <- NIDS
+							]]
+						)
+						)
+						 [| union(stateClockSync,{terminate}) |]
+						 StateClocks(id__)
+						)\diff(stateClockSync,enteredSS))
+						 [| {| interrupt |} |] SKIP)
+					)
+					)
+				
+				Behaviour(id__) = 
+					dbisim((let
+						stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+					 within
+						(MachineBody(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
+					)
+					)
+				
+				IteratedBehaviour(id__) = 
+					dbisim((let
+						stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+					 within
+						(dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody(id__)
+										[| {|get_CLID_s0,s0::entered,terminate|} |]
+										dbisim(Clock_CLID_s0(id__,0))
+									)\{|get_CLID_s0|}
+								)
+								[| {|get_CLID_s1,s1::entered,terminate|} |]
+								dbisim(Clock_CLID_s1(id__,0))
+							)\{|get_CLID_s1|}
+						)
+						) \ union(stateClockSync,enteredSS)
+					)
+					)
+				
+				Stateful(id__) = 
+					((let
+						getsetLocalChannels = {|get_x,set_x|}
+						clockSync = {||}
+					within
+						(Behaviour(id__) 
+						 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+						 (varMemory(id__) [| {terminate} |] Clocks(id__))
+					 	)\union(getsetLocalChannels,clockSync)
+					)
+					)
+				
+				IteratedStateful(id__) =
+					(dbisim(
+						sbisim(
+							IteratedBehaviour(id__)
+							[| {|get_x,set_x,terminate|} |]
+							Memory_x(0)
+						)\{|get_x,set_x|}
+					)
+					)
+				
+				-- Visible counterparts
+				MachineBody_VS_O(id__) = 
+					dbisim((
+					let
+						finalNodesEntered = {||}
+					within
+						(dbisim((dbisim((let
+							-- IMPLEMENTATION NOTE:
+							-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							-- modules for defining the semantics of each node.
+							enterSS = {|
+							i0::enter,
+							s0::enter,
+							s1::enter
+							|}
+							hideSet = union(enterSS,{|exit,exited,internal__|})
+						within 
+							((let
+								-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+								-- because CSPM modules are used for the semantics of Node.
+								flowevts = union(enterSS,{|exit,exited,interrupt|})
+								transSync = {|internal__.NID_i0,left__.NID_s0.in,ack__.NID_s1.in|}
+							within
+								((
+								 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+								   i0::VS_O__(id__)
+								   [| { share__, terminate } |] (
+								   s0::VS_O__(id__)
+								   [| { share__, terminate } |] (
+								   s1::VS_O__(id__)
+								   )
+								   )
+								 )
+								 [[s0::interrupt <- x__ | x__ <- {|interrupt,left__.NID_s0.in|}]]
+								 [[s1::interrupt <- x__ | x__ <- {|interrupt,ack__.NID_s1.in|}]]
+								 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+								 )
+								  [[ share__ <- x__ | x__ <- {| share__,setR_x |} ]] 
+								 )
+								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+								 			,setR_x
+								 			|}) |]
+								 ((i0::enter -> Transitions(id__))
+								  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+								  [[set_x <- setR_x]]
+								 )
+								)
+								 [[setR_x <- set_x]]
+								)
+							)
+							 \ hideSet)
+							[[
+								left__.x____ <- left,
+								right__.x____ <- right,
+								ack__.x____ <- ack
+								| x____ <- NIDS
+							]]
+						)
+						)
+						 [| union(stateClockSync,{terminate}) |]
+						 StateClocks(id__)
+						)\diff(stateClockSync,enteredSS))
+						 [| {| interrupt |} |] SKIP)
+					)
+					)
+				
+				Behaviour_VS_O(id__) = 
+					dbisim((let
+						stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+					 within
+						(MachineBody_VS_O(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+					)
+					)
+				
+				IteratedBehaviour_VS_O(id__) = 
+					dbisim((let
+						stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+					 within
+						(dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody_VS_O(id__)
+										[| {|get_CLID_s0,s0::entered,terminate|} |]
+										dbisim(Clock_CLID_s0(id__,0))
+									)\{|get_CLID_s0|}
+								)
+								[| {|get_CLID_s1,s1::entered,terminate|} |]
+								dbisim(Clock_CLID_s1(id__,0))
+							)\{|get_CLID_s1|}
+						)
+						) \ diff(union(stateClockSync,enteredSS),enteredSS)
+					)
+					)
+				
+				Stateful_VS_O(id__) = 
+					dbisim((let
+						getsetLocalChannels = {|get_x,set_x|}
+						clockSync = {||}
+					within
+						(Behaviour_VS_O(id__) 
+						 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+						 (varMemory(id__) [| {terminate} |] Clocks(id__))
+					 	)\union(getsetLocalChannels,clockSync)
+					)
+					)
+				
+				IteratedStateful_VS_O(id__) =
+					(dbisim(
+						sbisim(
+							IteratedBehaviour_VS_O(id__)
+							[| {|get_x,set_x,terminate|} |]
+							Memory_x(0)
+						)\{|get_x,set_x|}
+					)
+					)
+				
+				-- END
+				
+				-- Memory
+				-- Memory variables
+				Memory_x(x) =
+					get_x!x -> Memory_x(x)
+					[]
+					set_x?x__ -> Memory_x(x__)
+					[]
+					terminate -> SKIP
+				
+				-- varMemory process
+				varMemory(id__) = Memory_x(0)
+				
+				getsetLocalChannels = {|get_x,set_x|}
+				
+				-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+				FVS__(id__) = STM_VS_O(id__) \ localClockResets
+				D__(id__) = timed_priority(STM(id__) \ union(internal_events,localClockResets))
+				O__(id__) = dbisim(D__(id__))
+				VS__(id__) = FVS__(id__)
+				VS_O__(id__) = dbisim(FVS__(id__))
+				HEXT__(id__) = O__(id__) [|shared_variable_events|] SKIP
+				FVS_C__(id__) = dbisim(timed_priority(STM(id__) \ internal_events))
+				HUP__(id__) = timed_priority(O__(id__) [|{share__}|] SKIP)
+				
+				-- Clocks
+				
+				Clocks(id__) = terminate -> SKIP
+				
+				clockSync = {||}
+				
+				Clock_CLID_s1(id__,x__) = 
+					TimeOut_1(
+						s1::entered -> Clock_CLID_s1(id__,0)
+						[]
+						get_CLID_s1!x__ -> Clock_CLID_s1(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_s1(id__,clock_type_plus(x__,1,CLID_s1_clock_type(id__))))
+				Clock_CLID_s0(id__,x__) = 
+					TimeOut_1(
+						s0::entered -> Clock_CLID_s0(id__,0)
+						[]
+						get_CLID_s0!x__ -> Clock_CLID_s0(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_s0(id__,clock_type_plus(x__,1,CLID_s0_clock_type(id__))))
+				
+				StateClocks(id__) = dbisim(Clock_CLID_s1(id__,0))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_s0(id__,0))
+				)
+				
+				stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+				
+				-- Shared memory
+				-- Shared memory variables
+				
+				-- sharedVarMemory process
+				sharedVarMemory(id__) = terminate -> SKIP
+				
+				sharedVarSync = {||}
+				
+				sharedVarHide = {||}
+				}
+		endmodule
+		module stm1
+		exports
+			transparent diamond
+			transparent sbisim
+			transparent dbisim
+			transparent chase
+		
+			-- Transition identifiers
+			-- declaring identifiers of transitions
+			datatype NIDS = 
+			              NID_i0|
+			              NID_s0|
+			              NID_s1
+			
+			channel internal__ : NIDS
+			
+			-- Flow channels		
+			channel interrupt
+			channel exited
+			channel exit
+			channel terminate
+			
+			-- Variable channels
+			channel get_x, set_x, setL_x, setR_x: core_nat
+			
+			-- Shared variable channels
+			
+			-- Local variable channels for defined operations that are required by the state machine
+			
+			-- Declaring state machine events
+			channel left__: NIDS.InOut.core_nat
+			channel left: InOut.core_nat
+			channel right__: NIDS.InOut.core_nat
+			channel right: InOut.core_nat
+			channel ack__: NIDS.InOut
+			channel ack: InOut
+			
+			-- Declaring call and ret events for undefined operations
+			
+			enterSS = {|
+			i0::enter,
+			s0::enter,
+			s1::enter
+			|}
+			
+			enteredSS = 	{|
+			s0::entered,
+			s1::entered
+			|}
+			
+			internal_events = union(enteredSS,union(enterSS,{|interrupt,exited|}))
+			
+			shared_variable_events = {|
+			|}
+			
+			-- channel set with all visible events
+			sem__events = {|
+				terminate
+			,	left,
+				right,
+				ack
+				|}
+			
+			channel clockReset, clockResetL, clockResetR 
+			
+			localClockResets = {||}
+			
+			
+			channel get_CLID_s1 : core_clock_type 
+			channel get_CLID_s0 : core_clock_type 
+			--channel increment__
+			
+			CLID_s1_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			CLID_s0_clock_type(id__) = 
+				let
+					max = (clock_type_max(Union({
+			}))+1)
+				ctype = {0..max}
+			within
+				if member(max,core_clock_type) then ctype else error("core_clock_type is not wide enough")
+			
+			
+		
+				-- Nodes --
+				-- declaring all nodes
+				
+				----------------------------------------------------------------------
+				-- Initial: i0
+				module i0
+				exports
+				
+					channel enter, interrupt
+					
+					Timed(OneStep) {
+						D__(id__) = 
+							dbisim(let
+								Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+								
+								Termination = terminate -> SKIP
+								
+								Active 		= share__choice(interrupt -> SKIP) ; Inactive
+							within
+								Inactive [| {terminate} |> SKIP)
+						
+						VS_O__(id__) = D__(id__)
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				----------------------------------------------------------------------
+				-- State: s0
+				module s0
+				
+				enterSS = {}
+				
+				enteredSS = {}
+				
+				exports
+				
+					--  Declarations
+					
+					channel enter, entered, interrupt
+					channel enteredL, enteredR
+					
+									
+					
+					--channel increment__
+					
+					
+					--	Nodes
+					-- declaring all nodes
+					
+					
+					Timed(OneStep) {
+						--	Rule: behaviours(Node)
+						--  Note that FDR has problems with efficiently compiling the process below
+						-- 	if using a different recursion pattern.
+						D__(id__) = 
+						dbisim(let
+							-- IMPLEMENTATION NOTE: 
+							-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+							-- however FDR struggles with that form in certain cases. So we use the exception operator
+							-- instead to 'terminate'.
+							
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+							
+						VS_O__(id__) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+						
+						-- Clocks
+						
+						StateClocks(id__) = terminate -> SKIP
+						
+						stateClockSync = {||}
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				
+				----------------------------------------------------------------------
+				-- State: s1
+				module s1
+				
+				enterSS = {}
+				
+				enteredSS = {}
+				
+				exports
+				
+					--  Declarations
+					
+					channel enter, entered, interrupt
+					channel enteredL, enteredR
+					
+									
+					
+					--channel increment__
+					
+					
+					--	Nodes
+					-- declaring all nodes
+					
+					
+					Timed(OneStep) {
+						--	Rule: behaviours(Node)
+						--  Note that FDR has problems with efficiently compiling the process below
+						-- 	if using a different recursion pattern.
+						D__(id__) = 
+						dbisim(let
+							-- IMPLEMENTATION NOTE: 
+							-- The following should be defined as: Inactive = share__choice(Activation [] Termination),
+							-- however FDR struggles with that form in certain cases. So we use the exception operator
+							-- instead to 'terminate'.
+							
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+							
+						VS_O__(id__) = 
+						dbisim(let
+							Inactive 	= share__choice(enter -> SKIP [] terminate -> SKIP) ; Active
+							
+							Termination = terminate -> SKIP
+							
+							Active 		= SKIP ; 
+									 	  Behaviour ; 
+									 	  share__choice(exit -> SKIP) ; SKIP ; 
+									 	  share__choice(exited -> SKIP) ; Inactive
+						
+							Behaviour 	= entered -> During
+							During 		= ((SKIP ; SStop) /\ interrupt -> SKIP)
+						within
+							Inactive [| {terminate} |> SKIP)
+						
+						
+						-- Clocks
+						
+						StateClocks(id__) = terminate -> SKIP
+						
+						stateClockSync = {||}
+					}
+				
+				endmodule
+				----------------------------------------------------------------------
+				
+				-- END of Nodes --
+				
+				Timed(OneStep) {
+				-- Operation calls --
+				-- Only the undefined operations are declared here.
+				-- If the state machine is in isolation, all required operations will be undefined.
+				-- If it is in the context of a controller, the required operations not provided by the
+				-- controller will be declared here, and the defined operations will be defined in the
+				-- context of the Controller module, and therefore within scope of the state machine module.
+				
+				-- END of Operation calls --
+			
+				-- STM processes
+				STM(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+				( 
+					(
+						(
+							(IteratedStateful(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+						 	[[ share__ <- x__ | x__ <- {||} ]]
+						)
+					[| {share__} |]
+					SKIP
+					)
+					[| union(sharedVarSync,{terminate}) |]
+					dbisim(sharedVarMemory(id__))
+				)\sharedVarHide
+				
+				STM_VS_O(id__) = -- RULE: [[stm:StateMachineDef]]_STM^nops : CSPProcess
+				( 
+					(
+						(
+							(IteratedStateful_VS_O(id__) \ {terminate} ; share__choice(terminate -> SKIP))
+						 	[[ share__ <- x__ | x__ <- {||} ]]
+						)
+					[| {share__} |]
+					SKIP
+					)
+					[| union(sharedVarSync,{terminate}) |]
+					dbisim(sharedVarMemory(id__))
+				)\sharedVarHide
+				
+				-- Transitions
+				Transitions(id__) = ((let
+					Trans = TimeOut_1(
+						 (share__ -> SKIP
+						 [] dbisim((true)&(internal__!NID_i0 -> SKIP ;  ((SKIP ; s0::enter -> SKIP))))
+						 [] dbisim((true)&(left__!NID_s0.in?x:{x|x <- core_nat, true} -> share__choice(set_x!x -> SKIP) ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; share__choice(get_x?x -> true&(share__choice(right.out!x -> SKIP))) ; s1::enter -> SKIP)))
+						 [] dbisim((true)&(internal__!NID_s1 -> SKIP ;  share__choice(exit -> SKIP) ; (share__choice(exited -> SKIP) ; true&(share__choice(ack.out -> SKIP)) ; s0::enter -> SKIP)))
+						 []
+						 (interrupt -> share__choice(exit -> SKIP) ; share__choice(exited -> terminate -> SKIP))
+						 []
+						 terminate -> SKIP
+						 )
+					,SKIP);Trans
+				within
+					Trans [|{terminate}|> SKIP
+				)
+				)
+				
+				-- Stateful
+				-- RULE: Stateful(stm:StateMachineBody) : CSPProcess
+				
+				-- Named process definitions
+				MachineBody(id__) = 
+					dbisim((
+					let
+						finalNodesEntered = {||}
+					within
+						(dbisim((dbisim((let
+							-- IMPLEMENTATION NOTE:
+							-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							-- modules for defining the semantics of each node.
+							enterSS = {|
+							i0::enter,
+							s0::enter,
+							s1::enter
+							|}
+							hideSet = union(enterSS,{|exit,exited,internal__|})
+						within 
+							((let
+								-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+								-- because CSPM modules are used for the semantics of Node.
+								flowevts = union(enterSS,{|exit,exited,interrupt|})
+								transSync = {|internal__.NID_i0,left__.NID_s0.in,internal__.NID_s1|}
+							within
+								((
+								 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+								   i0::D__(id__)
+								   [| { share__, terminate } |] (
+								   s0::D__(id__)
+								   [| { share__, terminate } |] (
+								   s1::D__(id__)
+								   )
+								   )
+								 )
+								 [[s0::interrupt <- x__ | x__ <- {|interrupt,left__.NID_s0.in|}]]
+								 [[s1::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_s1|}]]
+								 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+								 )
+								  [[ share__ <- x__ | x__ <- {| share__,setR_x |} ]] 
+								 )
+								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+								 			,setR_x
+								 			|}) |]
+								 ((i0::enter -> Transitions(id__))
+								  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+								  [[set_x <- setR_x]]
+								 )
+								)
+								 [[setR_x <- set_x]]
+								)
+							)
+							 \ hideSet)
+							[[
+								left__.x____ <- left,
+								right__.x____ <- right,
+								ack__.x____ <- ack
+								| x____ <- NIDS
+							]]
+						)
+						)
+						 [| union(stateClockSync,{terminate}) |]
+						 StateClocks(id__)
+						)\diff(stateClockSync,enteredSS))
+						 [| {| interrupt |} |] SKIP)
+					)
+					)
+				
+				Behaviour(id__) = 
+					dbisim((let
+						stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+					 within
+						(MachineBody(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ union(stateClockSync,enteredSS)
+					)
+					)
+				
+				IteratedBehaviour(id__) = 
+					dbisim((let
+						stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+					 within
+						(dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody(id__)
+										[| {|get_CLID_s0,s0::entered,terminate|} |]
+										dbisim(Clock_CLID_s0(id__,0))
+									)\{|get_CLID_s0|}
+								)
+								[| {|get_CLID_s1,s1::entered,terminate|} |]
+								dbisim(Clock_CLID_s1(id__,0))
+							)\{|get_CLID_s1|}
+						)
+						) \ union(stateClockSync,enteredSS)
+					)
+					)
+				
+				Stateful(id__) = 
+					((let
+						getsetLocalChannels = {|get_x,set_x|}
+						clockSync = {||}
+					within
+						(Behaviour(id__) 
+						 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+						 (varMemory(id__) [| {terminate} |] Clocks(id__))
+					 	)\union(getsetLocalChannels,clockSync)
+					)
+					)
+				
+				IteratedStateful(id__) =
+					(dbisim(
+						sbisim(
+							IteratedBehaviour(id__)
+							[| {|get_x,set_x,terminate|} |]
+							Memory_x(0)
+						)\{|get_x,set_x|}
+					)
+					)
+				
+				-- Visible counterparts
+				MachineBody_VS_O(id__) = 
+					dbisim((
+					let
+						finalNodesEntered = {||}
+					within
+						(dbisim((dbisim((let
+							-- IMPLEMENTATION NOTE:
+							-- Here the 'enter' channel set is calculated explicitly because of the use of CSPM 
+							-- modules for defining the semantics of each node.
+							enterSS = {|
+							i0::enter,
+							s0::enter,
+							s1::enter
+							|}
+							hideSet = union(enterSS,{|exit,exited,internal__|})
+						within 
+							((let
+								-- IMPLEMENTATION NOTE: the channel set 'enter' is calculated explicitly
+								-- because CSPM modules are used for the semantics of Node.
+								flowevts = union(enterSS,{|exit,exited,interrupt|})
+								transSync = {|internal__.NID_i0,left__.NID_s0.in,internal__.NID_s1|}
+							within
+								((
+								 (((-- RULE composeNodes(nc:NodeContainer)^nops : CSPProcess
+								   i0::VS_O__(id__)
+								   [| { share__, terminate } |] (
+								   s0::VS_O__(id__)
+								   [| { share__, terminate } |] (
+								   s1::VS_O__(id__)
+								   )
+								   )
+								 )
+								 [[s0::interrupt <- x__ | x__ <- {|interrupt,left__.NID_s0.in|}]]
+								 [[s1::interrupt <- x__ | x__ <- {|interrupt,internal__.NID_s1|}]]
+								 [[i0::interrupt <- x__ | x__ <- {|internal__.NID_i0|}]]
+								 )
+								  [[ share__ <- x__ | x__ <- {| share__,setR_x |} ]] 
+								 )
+								 [| union(union(union(flowevts,transSync),{terminate}),{|share__
+								 			,setR_x
+								 			|}) |]
+								 ((i0::enter -> Transitions(id__))
+								  [[ share__ <- x__ | x__ <- {| share__ |} ]]
+								  [[set_x <- setR_x]]
+								 )
+								)
+								 [[setR_x <- set_x]]
+								)
+							)
+							 \ hideSet)
+							[[
+								left__.x____ <- left,
+								right__.x____ <- right,
+								ack__.x____ <- ack
+								| x____ <- NIDS
+							]]
+						)
+						)
+						 [| union(stateClockSync,{terminate}) |]
+						 StateClocks(id__)
+						)\diff(stateClockSync,enteredSS))
+						 [| {| interrupt |} |] SKIP)
+					)
+					)
+				
+				Behaviour_VS_O(id__) = 
+					dbisim((let
+						stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+					 within
+						(MachineBody_VS_O(id__) [| union(stateClockSync,{terminate}) |] StateClocks(id__)) \ diff(union(stateClockSync,enteredSS),enteredSS)
+					)
+					)
+				
+				IteratedBehaviour_VS_O(id__) = 
+					dbisim((let
+						stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+					 within
+						(dbisim(
+							sbisim(
+								dbisim(
+									sbisim(
+										MachineBody_VS_O(id__)
+										[| {|get_CLID_s0,s0::entered,terminate|} |]
+										dbisim(Clock_CLID_s0(id__,0))
+									)\{|get_CLID_s0|}
+								)
+								[| {|get_CLID_s1,s1::entered,terminate|} |]
+								dbisim(Clock_CLID_s1(id__,0))
+							)\{|get_CLID_s1|}
+						)
+						) \ diff(union(stateClockSync,enteredSS),enteredSS)
+					)
+					)
+				
+				Stateful_VS_O(id__) = 
+					dbisim((let
+						getsetLocalChannels = {|get_x,set_x|}
+						clockSync = {||}
+					within
+						(Behaviour_VS_O(id__) 
+						 [| union(union(getsetLocalChannels,clockSync),{terminate}) |] 
+						 (varMemory(id__) [| {terminate} |] Clocks(id__))
+					 	)\union(getsetLocalChannels,clockSync)
+					)
+					)
+				
+				IteratedStateful_VS_O(id__) =
+					(dbisim(
+						sbisim(
+							IteratedBehaviour_VS_O(id__)
+							[| {|get_x,set_x,terminate|} |]
+							Memory_x(0)
+						)\{|get_x,set_x|}
+					)
+					)
+				
+				-- END
+				
+				-- Memory
+				-- Memory variables
+				Memory_x(x) =
+					get_x!x -> Memory_x(x)
+					[]
+					set_x?x__ -> Memory_x(x__)
+					[]
+					terminate -> SKIP
+				
+				-- varMemory process
+				varMemory(id__) = Memory_x(0)
+				
+				getsetLocalChannels = {|get_x,set_x|}
+				
+				-- Definition of the behaviour of state machines (default, optimised, visible, visible and optimised)
+				FVS__(id__) = STM_VS_O(id__) \ localClockResets
+				D__(id__) = timed_priority(STM(id__) \ union(internal_events,localClockResets))
+				O__(id__) = dbisim(D__(id__))
+				VS__(id__) = FVS__(id__)
+				VS_O__(id__) = dbisim(FVS__(id__))
+				HEXT__(id__) = O__(id__) [|shared_variable_events|] SKIP
+				FVS_C__(id__) = dbisim(timed_priority(STM(id__) \ internal_events))
+				HUP__(id__) = timed_priority(O__(id__) [|{share__}|] SKIP)
+				
+				-- Clocks
+				
+				Clocks(id__) = terminate -> SKIP
+				
+				clockSync = {||}
+				
+				Clock_CLID_s1(id__,x__) = 
+					TimeOut_1(
+						s1::entered -> Clock_CLID_s1(id__,0)
+						[]
+						get_CLID_s1!x__ -> Clock_CLID_s1(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_s1(id__,clock_type_plus(x__,1,CLID_s1_clock_type(id__))))
+				Clock_CLID_s0(id__,x__) = 
+					TimeOut_1(
+						s0::entered -> Clock_CLID_s0(id__,0)
+						[]
+						get_CLID_s0!x__ -> Clock_CLID_s0(id__,x__)
+						[]
+						terminate -> SKIP,Clock_CLID_s0(id__,clock_type_plus(x__,1,CLID_s0_clock_type(id__))))
+				
+				StateClocks(id__) = dbisim(Clock_CLID_s1(id__,0))
+				[| { terminate } |] (
+				dbisim(Clock_CLID_s0(id__,0))
+				)
+				
+				stateClockSync = {|get_CLID_s1,s1::entered,get_CLID_s0,s0::entered|}
+				
+				-- Shared memory
+				-- Shared memory variables
+				
+				-- sharedVarMemory process
+				sharedVarMemory(id__) = terminate -> SKIP
+				
+				sharedVarSync = {||}
+				
+				sharedVarHide = {||}
+				}
+		endmodule
+		
+		Timed(OneStep) {
+				-- undefined operations
+				
+				-- declaring controller memory
+				Memory(id__) = SKIP
+				
+				D__(id__) = prioritise(	((
+						(
+							stm0::D__(id__)[[
+								stm0::terminate <- terminate,
+								stm0::left <- left,
+								stm0::ack.in <- stm1::ack.out,
+								stm0::ack.out <- stm1::ack.in
+							]]
+						)
+							[|{|terminate, stm0::right, stm1::ack|}|]
+						(
+							stm1::D__(id__)[[
+								stm1::terminate <- terminate,
+								stm1::left.in <- stm0::right.out,
+								stm1::left.out <- stm0::right.in,
+								stm1::right <- right
+							]]
+						)
+					)
+					\diff(
+						{|terminate, stm0::right, stm1::ack|},
+						{|terminate|}
+					)
+						[|
+							union(
+								{|
+								|},
+								{|
+								|}
+							)
+						|]
+					Memory(id__)
+				)
+				\ union(
+					{|
+					|},
+					{|
+					|}
+				)
+				[|{|terminate|}|>SKIP
+				,<visibleMemoryEvents,{tock}>)
+				
+				-- VS version
+				VS__(id__) = prioritise(	((
+						(
+							stm0::VS__(id__)[[
+								stm0::terminate <- terminate,
+								stm0::left <- left,
+								stm0::ack.in <- stm1::ack.out,
+								stm0::ack.out <- stm1::ack.in
+							]]
+						)
+							[|{|terminate, stm0::right, stm1::ack|}|]
+						(
+							stm1::VS__(id__)[[
+								stm1::terminate <- terminate,
+								stm1::left.in <- stm0::right.out,
+								stm1::left.out <- stm0::right.in,
+								stm1::right <- right
+							]]
+						)
+					)
+					\diff(
+						{|terminate, stm0::right, stm1::ack|},
+						{|terminate|}
+					)
+						[|
+							union(
+								{|
+								|},
+								{|
+								|}
+							)
+						|]
+					Memory(id__)
+				)
+				\ union(
+					{|
+					|},
+					{|
+					|}
+				)
+				[|{|terminate|}|>SKIP
+				,<visibleMemoryEvents,{tock}>)
+			
+				-- O version (optimised) THESE TWO PROCESSES SHOULD BE KEPT IN SYNC WITH THE ABOVE TWO
+				O__(id__) = dbisim(prioritise(	((
+						(
+							stm0::O__(id__)[[
+								stm0::terminate <- terminate,
+								stm0::left <- left,
+								stm0::ack.in <- stm1::ack.out,
+								stm0::ack.out <- stm1::ack.in
+							]]
+						)
+							[|{|terminate, stm0::right, stm1::ack|}|]
+						(
+							stm1::O__(id__)[[
+								stm1::terminate <- terminate,
+								stm1::left.in <- stm0::right.out,
+								stm1::left.out <- stm0::right.in,
+								stm1::right <- right
+							]]
+						)
+					)
+					\diff(
+						{|terminate, stm0::right, stm1::ack|},
+						{|terminate|}
+					)
+						[|
+							union(
+								{|
+								|},
+								{|
+								|}
+							)
+						|]
+					dbisim(Memory(id__))
+				)
+				\ union(
+					{|
+					|},
+					{|
+					|}
+				)
+				[|{|terminate|}|>SKIP
+				,<visibleMemoryEvents,{tock}>))
+								
+				-- VS_O version
+				VS_O__(id__) = dbisim(prioritise(	((
+						(
+							stm0::VS_O__(id__)[[
+								stm0::terminate <- terminate,
+								stm0::left <- left,
+								stm0::ack.in <- stm1::ack.out,
+								stm0::ack.out <- stm1::ack.in
+							]]
+						)
+							[|{|terminate, stm0::right, stm1::ack|}|]
+						(
+							stm1::VS_O__(id__)[[
+								stm1::terminate <- terminate,
+								stm1::left.in <- stm0::right.out,
+								stm1::left.out <- stm0::right.in,
+								stm1::right <- right
+							]]
+						)
+					)
+					\diff(
+						{|terminate, stm0::right, stm1::ack|},
+						{|terminate|}
+					)
+						[|
+							union(
+								{|
+								|},
+								{|
+								|}
+							)
+						|]
+					dbisim(Memory(id__))
+				)
+				\ union(
+					{|
+					|},
+					{|
+					|}
+				)
+				[|{|terminate|}|>SKIP
+				,<visibleMemoryEvents,{tock}>))
+			
+				HEXT(id__) = O__(id__) [|shared_variable_events|] SKIP			
+		}
+
+	endmodule

@@ -1,0 +1,100 @@
+
+--
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 03-12-2025 22:55:30
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+
+	include "defs/file_system_defs.csp"
+	include "defs/state_defs.csp"
+	include "defs/core_defs.csp"
+	include "defs/file_broken_defs.csp"
+	include "defs/sequence_toolkit_defs.csp"
+	include "defs/ctrl0.csp"
+	include "defs/ctrl2.csp"
+	include "defs/file_main_defs.csp"
+	include "defs/function_toolkit_defs.csp"
+	include "defs/robochart_defs.csp"
+	include "defs/ctrl1.csp"
+	include "defs/set_toolkit_defs.csp"
+	include "instantiations.csp"
+	include "defs/relation_toolkit_defs.csp"
+	
+	channel r__
+	
+	-- A1 - refinement
+	assert (let 
+		id__ = 0
+		
+		
+		
+			
+	within
+		ctrl0::D__(id__)
+	[[ctrl0::left <- ctrl1::left, 
+	ctrl0::right <- ctrl1::right 
+	]][[ ctrl0::terminate <- ctrl1::terminate ]])
+	 [T= let 
+		id__ = 0
+		
+		
+		
+			
+	within
+		ctrl1::D__(id__)
+	
+	-- A2 - refinement
+	assert (let 
+		id__ = 0
+		
+		
+		
+			
+	within
+		ctrl1::D__(id__)
+	[[ctrl1::left <- ctrl0::left, 
+	ctrl1::right <- ctrl0::right 
+	]][[ ctrl1::terminate <- ctrl0::terminate ]])
+	 [T= let 
+		id__ = 0
+		
+		
+		
+			
+	within
+		ctrl0::D__(id__)
+	
+	-- A3 - refinement
+	assert (let 
+		id__ = 0
+		
+		
+		
+			
+	within
+		ctrl0::D__(id__)
+	[[ctrl0::left <- ctrl2::left, 
+	ctrl0::right <- ctrl2::right 
+	]][[ ctrl0::terminate <- ctrl2::terminate ]])
+	 [T= let 
+		id__ = 0
+		
+		
+		
+			
+	within
+		ctrl2::D__(id__)
+	
+	-- A4 - deadlock free
+	assert let 
+		id__ = 0
+		
+		
+		
+			
+	within
+		ctrl2::D__(id__) :[deadlock free]
+	

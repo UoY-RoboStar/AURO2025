@@ -1,0 +1,72 @@
+
+--
+-- RoboChart generator version 3.0.0.202506101212
+-- Automatically generated on 03-12-2025 22:55:30
+--
+-- Iterated compression status: true
+-- Assertions compression status: false
+--
+
+include "file_system.csp"
+
+
+
+-- generate ctrl1
+P_ctrl1 = let
+	id__ = 0
+	
+	
+	
+		
+within
+	ctrl1::O__(id__)
+
+assert P_ctrl1 :[deadlock-free]	
+assert P_ctrl1;RUN({r__}) :[deadlock-free]
+assert P_ctrl1 :[deterministic]
+assert P_ctrl1 :[divergence-free]
+
+-- generate ctrl1_stm0
+P_ctrl1_stm0 = let
+	id__ = 0
+	
+	
+	
+within
+	ctrl1::stm0::O__(
+		id__
+	)
+assert P_ctrl1_stm0 :[deadlock-free]	
+assert P_ctrl1_stm0;RUN({r__}) :[deadlock-free]
+assert P_ctrl1_stm0 :[deterministic]
+assert P_ctrl1_stm0 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_ctrl1_stm0[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_ctrl1_stm0
+-- generate ctrl1_stm1
+P_ctrl1_stm1 = let
+	id__ = 0
+	
+	
+	
+within
+	ctrl1::stm1::O__(
+		id__
+	)
+assert P_ctrl1_stm1 :[deadlock-free]	
+assert P_ctrl1_stm1;RUN({r__}) :[deadlock-free]
+assert P_ctrl1_stm1 :[deterministic]
+assert P_ctrl1_stm1 :[divergence-free]
+-- timed deadlock free
+assert prioritise(P_ctrl1_stm1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_ctrl1_stm1
+-- timed deadlock free
+assert prioritise(P_ctrl1[[tock<-tock,tock<-tock']],<diff(Events,{tock',tock}),{tock}>)\{tock} :[divergence free [FD]]
+
+-- timelock free
+assert RUN({tock}) ||| CHAOS(diff(Events,{|tock|})) [F= P_ctrl1
+

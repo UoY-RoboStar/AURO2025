@@ -1,0 +1,22 @@
+[
+	{
+		"name": "ctrl1 refines ctrl0 (A1) [traces model]",
+		"type": "refines",
+		"negated": false 
+	},
+	{
+		"name": "ctrl0 refines ctrl1 (A2) [traces model]",
+		"type": "refines",
+		"negated": false 
+	},
+	{
+		"name": "ctrl2 refines ctrl0 (A3) [traces model]",
+		"type": "refines",
+		"negated": false 
+	},
+	{
+		"name": "ctrl2 is deadlock free (A4) [failures divergences model]",
+		"type": "deadlock-free",
+		"negated": false 
+	}
+]
