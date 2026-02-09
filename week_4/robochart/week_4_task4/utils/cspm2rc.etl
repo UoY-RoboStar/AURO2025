@@ -1,0 +1,240 @@
+/********************************************************************************
+ * Copyright (c) 2024 University of York and others
+ *
+ * Converter between RoboChartCSPMTraces and RoboChartTraces.
+ * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ * 
+ * SPDX-License-Identifier: EPL-2.0
+ * 
+ * Contributors:
+ *   Pedro Ribeiro - initial definition
+ *
+ ********************************************************************************/
+
+rule Top
+	transform o : Source!RoboChartCSPMTraces
+	to t : Target!RoboChartTraces
+{
+	t.name = o.name + "mod";
+	t.element = o.element;
+	t.roboTraces = o.roboTraces.equivalent();
+}
+
+rule RCSPMTrace2RCTrace 
+	transform o : Source!RCSPMTrace
+	to t : Target!RCTrace
+	{
+		t.name = o.name;
+		t.events = o.events.equivalent();
+}
+
+rule RCSPMevent2RCEvent_Event_Enumeration
+	transform o : Source!RCSPMEventRef
+	to t : Target!RTRCEventRef
+	{
+		guard : o.ref.isKindOf(Source!Event) 
+				
+		o.expression.~target = o.ref.type;
+		t.ref = o.ref;
+		t.inout = o.inout;
+		t.expression = o.expression.equivalent();
+		//("Event: "+o.ref.name).println();
+}
+
+// Converts a call with arguments.
+rule RCSPMevent2RCEvent_OperationCall
+	transform o : Source!RCSPMOperationCallRef
+	to t : Target!RTRCOperationRef
+	{
+		guard : o.expression.isKindOf(Source!RTDotExp) 
+			and o.expression.args.size() == o.ref.parameters.size()
+				
+		//("Call arg.size eq: " + o.ref.name).println();
+			
+		t.ref = o.ref;	
+		var noArgs = o.expression.args.size();
+		var i = 0;
+		
+		for (r : Source!RTExpression in o.expression.args) {
+			r.~target = o.ref.parameters[i].type;
+			t.args.add(r.equivalent());
+			i++;
+
+		}
+
+		
+}
+
+rule RCSPMevent2RCEvent_OperationCall_null_args
+	transform o : Source!RCSPMOperationCallRef
+	to t : Target!RTRCOperationRef
+	{
+		guard : (o.expression == null)
+		
+		//("Call no args: " + o.ref.name).println();
+		t.ref = o.ref;
+		//("Call no args done.").println();
+}
+
+rule RCSPMevent2RCEvent_OperationCall_one_arg
+	transform o : Source!RCSPMOperationCallRef
+	to t : Target!RTRCOperationRef
+	{
+		guard : o.expression <> null and not o.expression.isKindOf(Source!RTDotExp)
+				
+		//("Call one arg: " + o.ref.name).println();
+		t.ref = o.ref;
+		o.expression.~target = o.ref.parameters[0].type;
+		//("Type: " + o.expression.~target).println();
+		t.args.add(o.expression.equivalent());
+}
+
+// Converts an integer exp making use of record types
+@lazy
+rule Integer2RecordExp
+	transform o : Source!RTIntegerExp
+	to t : Target!RecordExp
+	{
+		guard: 	o.~target <> null and
+				o.~target.isKindOf(Source!TypeRef) and
+				o.~target.ref.isKindOf(Source!RecordType)
+				
+		//("Integer2RecordExp: " + o.value).println();
+		t.record = o.~target.ref;
+		
+		var field = new Target!FieldDefinition;
+		field.field = t.record.fields.first();
+		field.value = o.equivalent("IntegerExp");
+		//("Field: "+ field.field).println();
+		//("Value: "+ field.value).println();
+		t.definitions.add(field);
+		
+}
+
+// Converts literals into enum exprs.
+@lazy
+rule LiteralExp2Enu
+	transform o : Source!RTLiteralExp
+	to t : Target!EnumExp
+	{
+		// Only applicable if first string indicates an Enumeration!
+		guard: 	o.~target <> null and
+				o.~target.isKindOf(Source!TypeRef) and
+				o.~target.ref.isKindOf(Source!Enumeration) and
+				o.~target.ref.name == o.value.split("_").first()
+		
+		//"Match in LiteralExp2Enu".println();		
+		t.type = o.~target.ref;
+		t.literal = o.~target.ref.literals.selectOne(e:Source!Literal|e.name == o.value.split("_").second());
+
+		//("Literal:"+ t.literal.name).println();
+		//("Enum:" + t.type.name).println();
+
+}
+
+
+// Converts regular integer expressions
+rule IntegerExp
+	transform o : Source!RTIntegerExp
+	to t : Target!IntegerExp
+	{
+		//("IntegerExp: " + o.value).println();
+		t.value = o.value;
+		//("IntegerExp: " + t.value).println();
+}
+
+
+rule MinusExp
+	transform o : Source!RTMinusExp
+	to t : Target!Neg
+	{
+		//("MinusExp: " + o.value).println();
+		t.exp = o.value.equivalent();
+}
+
+
+rule StringExp
+	transform o : Source!RTStringExp
+	to t : Target!StringExp
+	{
+		//("StringExp: " + o.value).println();
+		t.value = o.value;
+}
+
+
+rule BooleanExp
+	transform o : Source!RTBooleanExp
+	to t : Target!BooleanExp
+	{
+		//("BooleanExp: " + o.value).println();
+		t.value = o.value;
+}
+
+@lazy
+rule TSeqExp
+	transform o: Source!RTSeqExp
+	to t : Target!SeqExp
+	{
+		guard: 	o.~target <> null and
+				o.~target.isKindOf(Source!SeqType)
+				
+		//("Typed TSeqExp: ").println();
+		var noArgs = o.values.size();
+		
+		for (r : Source!RTExpression in o.values) {
+			r.~target = o.~target.domain;
+			t.values.add(r.equivalent());
+//			o.values.at(i).~target = o.~target.domain;
+//			t.values.at(i) = o.values.at(i).equivalent();
+		}
+	}
+	
+@lazy
+rule TTupleExp
+	transform o: Source!RTTupleExp
+	to t : Target!TupleExp
+	{
+		guard: 	o.~target <> null and
+				o.~target.isKindOf(Source!TupleExp)
+				
+		//("Typed TTypleExp: ").println();
+		var noArgs = o.values.size();
+		
+		for (r : Source!RTExpression in o.values) {
+			r.~target = o.~target.domain;
+			t.values.add(r.equivalent());
+//			o.values.at(i).~target = o.~target.domain;
+//			t.values.at(i) = o.values.at(i).equivalent();
+		}
+	}
+	
+// Tuples that are actually corresponding to RoboChart data types!
+@lazy
+rule TTupleExp2Record
+	transform o: Source!RTTupleExp
+	to t : Target!RecordExp
+	{
+		guard: 	o.~target <> null and
+				o.~target.isKindOf(Source!TypeRef) and
+				o.~target.ref.isKindOf(Source!RecordType)
+				
+		//("Typed TTupleExp2Record: ").println();
+		var noArgs = o.values.size();
+		var i = 0;
+		
+		for (r : Source!RTExpression in o.values) {
+			r.~target = o.~target.ref.fields[i].type;
+			var def = new Target!FieldDefinition;
+			def.field = o.~target.ref.fields[i];
+			def.value = r.equivalent();
+			t.definitions.add(def);
+			t.record = o.~target.ref;
+			i++;
+//			o.values.at(i).~target = o.~target.domain;
+//			t.values.at(i) = o.values.at(i).equivalent();
+		}
+	}
+	
