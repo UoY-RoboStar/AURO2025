@@ -6,6 +6,7 @@
 #include "gazebo_ros_link_attacher/gazebo_ros_link_attacher.hpp"
 #include "gazebo_ros_link_attacher/srv/attach.hpp"
 #include <ignition/math/Pose3.hh>
+#include <boost/thread/recursive_mutex.hpp>
 
 namespace gazebo
 {
@@ -32,6 +33,7 @@ namespace gazebo
 
     this->world = _world;
     this->physics = this->world->Physics();
+    this->physics_mutex_ = this->physics->GetPhysicsUpdateMutex();
 
     // Create services
     this->attach_service_ = this->ros_node_->create_service<gazebo_ros_link_attacher::srv::Attach>(
@@ -136,7 +138,7 @@ namespace gazebo
   {
     FixedJoint j;
     if(this->getJoint(model1, link1, model2, link2, j)) {
-        std::lock_guard<std::recursive_mutex> lock(this->physics_mutex_);
+        boost::recursive_mutex::scoped_lock lock(*this->physics_mutex_);
         j.joint->Detach();
         RCLCPP_INFO(rclcpp::get_logger("GazeboRosLinkAttacher"), "Detach finished.");
         return true;

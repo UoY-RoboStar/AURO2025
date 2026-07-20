@@ -12,6 +12,7 @@
 #include <gazebo/common/Plugin.hh>
 #include <gazebo_ros/node.hpp>
 
+#include <boost/thread/recursive_mutex.hpp>
 #include "gazebo_ros_link_attacher/srv/attach.hpp"
 
 namespace gazebo
@@ -75,7 +76,7 @@ private:
     rclcpp::Service<gazebo_ros_link_attacher::srv::Attach>::SharedPtr detach_service_;
 
     /// \brief Mutex for thread safety
-    std::recursive_mutex physics_mutex_;
+    boost::recursive_mutex* physics_mutex_;
 
     /// \brief Vector to store joints
     std::vector<FixedJoint> joints;
