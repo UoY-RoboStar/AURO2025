@@ -1,1 +1,0 @@
-FROM ghcr.io/UoY-RoboStar/ros2-tb3:main

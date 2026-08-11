@@ -4,7 +4,7 @@
 // so does not require a Dockerfile.
 {
   "name": "auro-linux",
-  "image": "ghcr.io/uoy-robostar/ros2-tb3:main",
+  "image": "ghcr.io/uoy-robostar/ros2-tb3-univ:latest",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "mounts": [
